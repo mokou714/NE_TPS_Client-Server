@@ -1,0 +1,32 @@
+﻿<Properties StartupConfiguration="{F72243DF-9664-BCA7-22CD-C25B9CCE81BC}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BaseAnimationController.cs">
+    <Files>
+      <File FileName="Assets/Scripts/PlayerController.cs" Line="90" Column="1" />
+      <File FileName="Assets/Scripts/DamageMessage.cs" />
+      <File FileName="Assets/Scripts/BaseCharacterController.cs" />
+      <File FileName="Assets/Scripts/PlayerShootManager.cs" Line="24" Column="24" />
+      <File FileName="Assets/Scripts/PlayerAnimationController.cs" />
+      <File FileName="Assets/Scripts/BaseAnimationController.cs" Line="124" Column="6" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="TPS+Client&amp;Server" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="BaseAnimationController.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="299864a8-5302-4b72-a156-0c869499a230" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
