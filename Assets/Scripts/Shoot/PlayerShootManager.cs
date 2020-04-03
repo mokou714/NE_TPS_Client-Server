@@ -64,38 +64,31 @@ public class PlayerShootManager : BaseShootManager
 
     protected override void Shoot()
     {
-        //check player state
-        if(((PlayerController)_characterController).isJumping || _characterController.posture == BodyPosture.GUARD) return;
-        //check shooting state
-        if(currentAmmo == 0 || _isShooting || _isReloading) return;
+        //not automatic reloading for players
+        if (currentAmmo == 0) return;
+        //check player controller status
+        if (((PlayerController) _characterController).isJumping) return;
 
         if (Input.GetMouseButtonDown(0) && !burstMode || (Input.GetMouseButton(0) && burstMode))
         {
-            _isShooting = true;
-            _animationController.Shoot(burstMode);
-            StartCoroutine(ShootBullet(burstMode ? 4 : 1));
+            base.Shoot();
         }
     }
 
     protected override void SwitchMode()
     {
-        if (_characterController.posture == BodyPosture.GUARD) return;
-        
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            burstMode = !burstMode;
+            base.SwitchMode();
             bulletIconAnim.SwitchMode(burstMode);
         }
     }
 
     protected override void Reload()
     {
-        if (_isReloading || _isShooting) return;
-        
         if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo)
         {
-            _isReloading = true;
-            _animationController.Reload();
+            base.Reload();
         }
     }
     
@@ -118,7 +111,7 @@ public class PlayerShootManager : BaseShootManager
             Cursor.visible = false;
     }
 
-    IEnumerator ShootBullet(int number)
+    protected override IEnumerator ShootBullet(int number)
     {
         int _number = currentAmmo - number < 0 ? currentAmmo : number;
         

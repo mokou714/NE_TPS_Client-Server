@@ -19,6 +19,7 @@ public class PlayerController : BaseCharacterController
     
     protected override void Start()
     {
+        base.Start();
         _animationController = GetComponent<PlayerAnimationController>();
         _shootManager = GetComponent<PlayerShootManager>();
         _rigidbody = GetComponent<Rigidbody>();
@@ -38,9 +39,9 @@ public class PlayerController : BaseCharacterController
 
     protected override void Move()
     {
-        Vector3 movingDir = Vector3.zero;
+        var movingDir = Vector3.zero;
 
-        bool isWalking = !Input.GetKey(KeyCode.LeftShift);
+        var isWalking = !Input.GetKey(KeyCode.LeftShift);
 
         //forward
         if (Input.GetKey(KeyCode.W))
@@ -122,7 +123,7 @@ public class PlayerController : BaseCharacterController
         if (isMoving) return; //disable switching posture while moving
         if(cameraController.IsSwitchingAiming()) return; //disable switching posture when switching
 
-        BodyPosture _posture = posture;
+        var _posture = posture;
         if (Input.GetKeyDown(KeyCode.C))
         {
             posture = posture == BodyPosture.CROUCH ? BodyPosture.GUARD : BodyPosture.CROUCH;
@@ -152,12 +153,12 @@ public class PlayerController : BaseCharacterController
         // _facingDir = Quaternion.Euler(camPivotRotation)*Vector3.forward;
         
         //rotate body horizontally
-        Vector3 shootDirection = _shootManager.GetAimingDirection();
-        Quaternion aimmingRotation = Quaternion.LookRotation(shootDirection);
-        Quaternion YaxisRotation = aimmingRotation;
-        YaxisRotation.x = YaxisRotation.z = 0;
-        body.transform.rotation = YaxisRotation;
-        facingDir = YaxisRotation*Vector3.forward;
+        var shootDirection = _shootManager.GetAimingDirection();
+        var aimingRotation = Quaternion.LookRotation(shootDirection);
+        var yAxisRotation = aimingRotation;
+        yAxisRotation.x = yAxisRotation.z = 0;
+        body.transform.rotation = yAxisRotation;
+        facingDir = yAxisRotation*Vector3.forward;
         //Ray ray = new Ray(transform.position,facingDir);
         //Debug.DrawRay(ray.origin,ray.direction * 10, Color.red);
         
@@ -169,20 +170,20 @@ public class PlayerController : BaseCharacterController
         if (posture == BodyPosture.COMBAT)
         {
             
-            Vector3 shootDirection = _shootManager.GetAimingDirection();
-            Vector3 zDir = Vector3.Cross(shootDirection, Vector3.up);
-            Vector3 zLookAtDir = zDir + shootDirection;
-            Vector3 yDir = Vector3.Cross(zLookAtDir, shootDirection);
-            Quaternion toShootDirectionRotation = Quaternion.LookRotation(zLookAtDir, shootDirection);
+            var shootDirection = _shootManager.GetAimingDirection();
+            var zDir = Vector3.Cross(shootDirection, Vector3.up);
+            var zLookAtDir = zDir + shootDirection;
+            var yDir = Vector3.Cross(zLookAtDir, shootDirection);
+            var toShootDirectionRotation = Quaternion.LookRotation(zLookAtDir, shootDirection);
             spine.transform.rotation = toShootDirectionRotation;
         }
         else if (posture == BodyPosture.CROUCH)
         {
-            Vector3 shootDirection = _shootManager.GetAimingDirection();
-            Vector3 zDir = Vector3.Cross(shootDirection, Vector3.up);
-            Vector3 zLookAtDir = zDir + shootDirection;
-            Vector3 yDir = Vector3.Cross(zLookAtDir, shootDirection);
-            Quaternion toShootDirectionRotation = Quaternion.LookRotation(zLookAtDir, shootDirection);
+            var shootDirection = _shootManager.GetAimingDirection();
+            var zDir = Vector3.Cross(shootDirection, Vector3.up);
+            var zLookAtDir = zDir + shootDirection;
+            var yDir = Vector3.Cross(zLookAtDir, shootDirection);
+            var toShootDirectionRotation = Quaternion.LookRotation(zLookAtDir, shootDirection);
             spine.transform.rotation = toShootDirectionRotation;
         }
 
@@ -221,7 +222,7 @@ public class PlayerController : BaseCharacterController
 
     }
 
-    void SwitchCrosshairDisplay()
+    private void SwitchCrosshairDisplay()
     {
         crosshair.SetActive(!crosshair.activeSelf);
     }

@@ -1,32 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+    <e p="C:\Users\Administrator\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Administrator\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_TPS+Client&amp;Server.248740327.00" t="ExcludeRecursive" />
+    <e p="H:\UnityProjects\NE_TPS_Client&amp;Server" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
-      <e p="Assets" t="Include">
-        <e p="Scripts" t="Include">
-          <e p="BaseAnimationController.cs" t="Include" />
-          <e p="BaseCharacterController.cs" t="Include" />
-          <e p="BaseShootManager.cs" t="Include" />
-          <e p="BodyPosture.cs" t="Include" />
-          <e p="Bullet.cs" t="Include" />
-          <e p="BulletIconAnim.cs" t="Include" />
-          <e p="DamageMessage.cs" t="Include" />
-          <e p="DamageMessageManager.cs" t="Include" />
-          <e p="EnemyAI.cs" t="Include" />
-          <e p="HealthManager.cs" t="Include" />
-          <e p="PlayerAnimationController.cs" t="Include" />
-          <e p="PlayerController.cs" t="Include" />
-          <e p="PlayerShootManager.cs" t="Include" />
-          <e p="TPSCameraController.cs" t="Include" />
-        </e>
-      </e>
-      <e p="obj" t="ExcludeRecursive" />
-      <e p="Packages" t="ExcludeRecursive" />
-      <e p="Temp/bin" t="ExcludeRecursive" />
       <e p="TPS+Client&amp;Server.sln" t="IncludeFlat" />
     </e>
-    <e p="$USER_HOME$/Library/Caches/Rider2019.3/extResources" t="IncludeRecursive" />
-    <e p="$USER_HOME$/Library/Caches/Rider2019.3/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_TPS+Client&amp;Server.1863088688.00" t="ExcludeRecursive" />
   </component>
 </project>

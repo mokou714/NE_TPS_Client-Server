@@ -11,10 +11,10 @@ public abstract class BaseCharacterController : MonoBehaviour
     [SerializeField] protected float walkSpeed;
     [SerializeField] protected GameObject body;
     [SerializeField] protected GameObject spine;
+    [SerializeField] protected Transform center;
     
     //character status
-    public Transform center;
-    public Vector3 facingDir = Vector3.forward;
+    public Vector3 facingDir;
     public bool isMoving;
     public BodyPosture posture = BodyPosture.GUARD;
     
@@ -29,6 +29,7 @@ public abstract class BaseCharacterController : MonoBehaviour
         _animationController = GetComponent<BaseAnimationController>();
         _shootManager = GetComponent<BaseShootManager>();
         _rigidbody = GetComponent<Rigidbody>();
+        facingDir =  body.transform.rotation * Vector3.forward;
     }
 
     // Update is called once per frame
@@ -49,4 +50,20 @@ public abstract class BaseCharacterController : MonoBehaviour
     protected abstract void UpdateBodyYAxisRotation();
     //called inside LateUpdate(), override Body animation
     protected abstract void UpdateBodyXAxisRotation();
+
+    //getters, setters
+    public Transform Center => center;
+
+    public float RunSpeed
+    {
+        get => runSpeed;
+        set => runSpeed = value;
+    }
+
+    public float WalkSpeed
+    {
+        get => walkSpeed;
+        set => walkSpeed = value;
+    }
+    
 }

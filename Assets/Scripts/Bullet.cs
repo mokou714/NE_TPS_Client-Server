@@ -65,7 +65,7 @@ public class Bullet : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            _damageMessageManager.ShowMessage(other.gameObject.GetComponent<EnemyAI>().center.position);
+            _damageMessageManager.ShowMessage(other.gameObject.GetComponent<EnemyAIController>().Center.position);
             Reset();
         }
     }
