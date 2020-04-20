@@ -56,10 +56,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Knife.cs" />
      <Compile Include="Assets\Scripts\Animation\BaseAnimationController.cs" />
      <Compile Include="Assets\Scripts\Animation\PlayerAnimationController.cs" />
+     <Compile Include="Assets\Scripts\ArrowSkill\ArrowSkillManager.cs" />
+     <Compile Include="Assets\Scripts\ArrowSkill\BaseArrow.cs" />
+     <Compile Include="Assets\Scripts\ArrowSkill\PiercingArrow.cs" />
+     <Compile Include="Assets\Scripts\ArrowSkill\RegularArrow.cs" />
+     <Compile Include="Assets\Scripts\ArrowSkill\StunningArrow.cs" />
+     <Compile Include="Assets\Scripts\Attack\BaseShootManager.cs" />
+     <Compile Include="Assets\Scripts\Attack\Bullet.cs" />
+     <Compile Include="Assets\Scripts\Attack\EnemyAIMeleeManager.cs" />
+     <Compile Include="Assets\Scripts\Attack\EnemyAIShootManager.cs" />
+     <Compile Include="Assets\Scripts\Attack\PlayerShootManager.cs" />
      <Compile Include="Assets\Scripts\BodyPosture.cs" />
-     <Compile Include="Assets\Scripts\Bullet.cs" />
      <Compile Include="Assets\Scripts\BulletIconAnim.cs" />
      <Compile Include="Assets\Scripts\Control\AIState.cs" />
      <Compile Include="Assets\Scripts\Control\BaseCharacterController.cs" />
@@ -67,10 +77,8 @@
      <Compile Include="Assets\Scripts\Control\PlayerController.cs" />
      <Compile Include="Assets\Scripts\DamageMessage.cs" />
      <Compile Include="Assets\Scripts\DamageMessageManager.cs" />
-     <Compile Include="Assets\Scripts\HealthManager.cs" />
-     <Compile Include="Assets\Scripts\Shoot\BaseShootManager.cs" />
-     <Compile Include="Assets\Scripts\Shoot\EnemyAIShootManager.cs" />
-     <Compile Include="Assets\Scripts\Shoot\PlayerShootManager.cs" />
+     <Compile Include="Assets\Scripts\Health\BaseHealthManager.cs" />
+     <Compile Include="Assets\Scripts\Health\PlayerHealthManager.cs" />
      <Compile Include="Assets\Scripts\TPSCameraController.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>H:/UnityProjects/NE_TPS_Client&amp;Server/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

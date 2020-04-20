@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 public enum Direction
 {
@@ -11,7 +12,8 @@ public enum Direction
 public class BaseAnimationController : MonoBehaviour
 {
     protected Animator _animator;
-    
+    protected Random _random;
+
     //other components
     protected BaseCharacterController _characterController;
     protected BaseShootManager _shootManager;
@@ -22,6 +24,21 @@ public class BaseAnimationController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _characterController = GetComponent<BaseCharacterController>();
         _shootManager = GetComponent<BaseShootManager>();
+        _random = new Random();
+    }
+
+    public void KnifeAttack()
+    {
+        var rnd = _random.Next(0,2);
+        if (_characterController.posture == BodyPosture.CROUCH)
+        {
+            _animator.SetTrigger(rnd==0? "crouch_attack_1":"crouch_attack_2");
+        }
+        else if (_characterController.posture == BodyPosture.COMBAT)
+        {
+            _animator.SetTrigger(rnd==0? "combat_attack_1":"combat_attack_2");
+        }
+
     }
 
     public void Shoot(bool burstMode)
@@ -40,6 +57,11 @@ public class BaseAnimationController : MonoBehaviour
     {
         _animator.SetTrigger("reload");
         StartCoroutine(CheckReloading());
+    }
+
+    public void TakeDamage()
+    {
+        _animator.SetTrigger("take_damage");
     }
 
     public void SetWalk(bool isWalking, Direction direction )
@@ -120,7 +142,7 @@ public class BaseAnimationController : MonoBehaviour
     }
 
 
-    IEnumerator CheckReloading()
+    private IEnumerator CheckReloading()
     {
         yield return new WaitUntil(
             ()=>

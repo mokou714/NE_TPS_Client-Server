@@ -17,7 +17,7 @@ public class EnemyAIController : BaseCharacterController
     [SerializeField] private AIState _aiState;
     [SerializeField] private PlayerController _targetPlayer;
     [SerializeField] private Vector3 aimingDir;
-    
+
     //helper data
     private float vigilantStartTime;
 
@@ -40,44 +40,25 @@ public class EnemyAIController : BaseCharacterController
         StayingVigilant();
         UpdateBodyYAxisRotation();
         UpdateBodyXAxisRotation();
+        
+        _Debug();
+        
     }
 
+    //called per frame
     protected override void Move()
     {
-        //todo
     }
 
     private void DetectPlayer()
     {
-        if (_aiState != AIState.DETECT) return;
+        if (_aiState != AIState.DETECT && _aiState != AIState.VIGILANT ) return;
 
-        foreach (var player in players)
+        if (FindPlayer())
         {
-            //check view distance(use center position)
-            var distance = (player.Center.position - Center.position).magnitude;
-            if (distance > viewDistance) continue;
-
-            //check view angles(use eye position)
-            var playerDir = player.Center.position - eyeTransform.position;
-            var vertDir = playerDir;
-            var horiDir = playerDir;
-            vertDir.x = vertDir.z = 0;
-            horiDir.y = 0;
-
-            var facingVertDir = facingDir;
-            var facingHoriDir = facingDir;
-            facingVertDir.x = facingVertDir.z = 0;
-            facingHoriDir.y = 0;
-
-            if (Vector3.Angle(facingHoriDir, horiDir) > viewHorizontalRange / 2
-                ||
-                Vector3.Angle(facingVertDir, vertDir) > viewVerticalRange / 2)
-                return;
-
+            if(_aiState == AIState.DETECT)
+                SwitchBodyPosture();
             _aiState = AIState.CHASE;
-            facingDir = playerDir;
-            _targetPlayer = player;
-            SwitchBodyPosture();
             Debug.Log("Found Player");
         }
     }
@@ -105,7 +86,7 @@ public class EnemyAIController : BaseCharacterController
 
     private void StayingVigilant()
     {
-        if (_aiState != AIState.VIGILENT) return;
+        if (_aiState != AIState.VIGILANT) return;
         if (Time.time - vigilantStartTime > vigilantTime)
         {
             _aiState = AIState.DETECT;
@@ -117,7 +98,7 @@ public class EnemyAIController : BaseCharacterController
 
     private void LoseTargetPlayer()
     {
-        if (_aiState == AIState.DETECT || _aiState == AIState.VIGILENT) return;
+        if (_aiState == AIState.DETECT || _aiState == AIState.VIGILANT) return;
         
         if (_targetPlayer == null) throw new Exception("No Target Player");
 
@@ -126,7 +107,7 @@ public class EnemyAIController : BaseCharacterController
         //to detect state
         if (distance > viewDistance)
         {
-            _aiState = AIState.VIGILENT;
+            _aiState = AIState.VIGILANT;
             _targetPlayer = null;
             _animationController.SetWalk(false, Direction.FORWARD);
             _agent.isStopped = true;
@@ -140,10 +121,53 @@ public class EnemyAIController : BaseCharacterController
         }
     }
 
+    //internal helpers
     private void SwitchBodyPosture()
     {
         posture = posture == BodyPosture.COMBAT ? BodyPosture.GUARD : BodyPosture.COMBAT;
         _animationController.SwitchCombatState();
+    }
+
+    private bool FindPlayer()
+    {
+        foreach (var player in players)
+        {
+            //check view distance(use center position)
+            var distance = (player.Center.position - Center.position).magnitude;
+            if (distance > viewDistance) continue;
+
+            //check view angles(use eye position)
+            var playerDir = player.Center.position - eyeTransform.position;
+            var vertDir = playerDir;
+            var horiDir = playerDir;
+            vertDir.x = vertDir.z = 0;
+            horiDir.y = 0;
+
+            var facingVertDir = facingDir;
+            var facingHoriDir = facingDir;
+            facingVertDir.x = facingVertDir.z = 0;
+            facingHoriDir.y = 0;
+            
+            if (Vector3.Angle(facingHoriDir, horiDir) < viewHorizontalRange / 2
+                && Vector3.Angle(facingVertDir, vertDir) < viewVerticalRange / 2)
+            {
+                _targetPlayer = player;
+                facingDir = playerDir;
+                return true;
+            }
+           
+        }
+
+        return false;
+    }
+
+    private void _Debug()
+    {
+        Debug.DrawRay(eyeTransform.position,facingDir*30,Color.red);
+        foreach (var player in players)
+        {
+            Debug.DrawLine(eyeTransform.position, player.Center.transform.position);
+        }
     }
 
     protected override void UpdateBodyYAxisRotation()

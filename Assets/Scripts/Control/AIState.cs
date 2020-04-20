@@ -1,3 +1,3 @@
 ﻿public enum AIState {
-    DETECT, CHASE, ATTACK, VIGILENT
+    DETECT, CHASE, ATTACK, VIGILANT
 }

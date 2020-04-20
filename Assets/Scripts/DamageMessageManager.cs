@@ -26,9 +26,9 @@ public class DamageMessageManager : MonoBehaviour
         }
     }
 
-    public void ShowMessage(Vector3 characterPosition)
+    public void ShowMessage(int damage, Vector3 characterPosition)
     {
-        StartCoroutine(ShowDamageMessage(characterPosition));
+        StartCoroutine(ShowDamageMessage(damage, characterPosition));
     }
 
     public void EndShowing(int index)
@@ -37,11 +37,11 @@ public class DamageMessageManager : MonoBehaviour
     }
 
 
-    IEnumerator ShowDamageMessage(Vector3 characterPosition)
+    IEnumerator ShowDamageMessage(int damage, Vector3 characterPosition)
     {
         yield return new WaitUntil(()=>_availableMsg.Count>0);
         int index = _availableMsg.Dequeue();
-        messages[index].Show(index,characterPosition);
+        messages[index].Show(index, damage, characterPosition);
     }
     
 

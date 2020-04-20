@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DamageMessage : MonoBehaviour
 {
     //components
-    [SerializeField] private Text text;
+    private Text damageText;
     private DamageMessageManager _damageMessageManager;
     
     //properties
@@ -22,8 +23,13 @@ public class DamageMessage : MonoBehaviour
     private Color _textColor;
     private Vector3 _scale;
     private Vector3 _position;
-    
-    
+
+    private void Awake()
+    {
+        damageText = GetComponent<Text>();
+        gameObject.SetActive(false);
+    }
+
     void FixedUpdate()
     {
         Animate();
@@ -38,12 +44,13 @@ public class DamageMessage : MonoBehaviour
         _fadeOutSpeed = fadeOutSpeed;
         _rectTransform = GetComponent<RectTransform>();
         _damageMessageManager = damageMessageManager;
-        _textColor = text.color;
+        _textColor = damageText.color;
         _scale = transform.localScale;
     }
 
-    public void Show(int msgIndex, Vector3 hitCharacterWorldPosition)
+    public void Show(int msgIndex, int damage, Vector3 hitCharacterWorldPosition)
     {
+        damageText.text = damage.ToString();
         _msgIndex = msgIndex;
         _startTime = Time.time;
         Vector2 screenPosition = Camera.main.WorldToScreenPoint(hitCharacterWorldPosition);
@@ -60,7 +67,7 @@ public class DamageMessage : MonoBehaviour
         _isAnimating = false;
         gameObject.SetActive(false);
         transform.localScale = _scale;
-        text.color = _textColor;
+        damageText.color = _textColor;
         _damageMessageManager.EndShowing(_msgIndex);
     }
     
@@ -72,7 +79,7 @@ public class DamageMessage : MonoBehaviour
         
         _rectTransform.localScale = _scaleSpeed * logScalar * Vector3.one;
         _rectTransform.position = _moveSpeed * logScalar * _moveDirection + _position;
-        text.color = new Color(_textColor.r,_textColor.g,_textColor.b,logScalar>1?0:(1-expScalar*_fadeOutSpeed));
+        damageText.color = new Color(_textColor.r,_textColor.g,_textColor.b,logScalar>1?0:(1-expScalar*_fadeOutSpeed));
     }
 
     void CheckLifetime()
