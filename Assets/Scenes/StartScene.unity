@@ -680,6 +680,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e49aaf76d026ed43b92ce2aa77d8bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  socketReady: 0
+  errorMessage: 
+  finishedReceiving: 1
 --- !u!4 &211679369
 Transform:
   m_ObjectHideFlags: 0
@@ -2301,6 +2304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3f001517ceef324aa57741028b5f116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkManager: {fileID: 211679368}
 --- !u!1 &895406134
 GameObject:
   m_ObjectHideFlags: 0
@@ -2384,7 +2388,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1532568193}
-        m_MethodName: Connect
+        m_MethodName: SendRequest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2597,6 +2601,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7509499880c7746a310e825bceafbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkManager: {fileID: 211679368}
+  dataManager: {fileID: 881271282}
   userId: {fileID: 967943910}
   playerName: {fileID: 1446211220}
   password: {fileID: 554176130}
@@ -3532,6 +3538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54bd23b1abdcf5940aaf9022bf46b4c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkManager: {fileID: 211679368}
+  dataManager: {fileID: 881271282}
   userId: {fileID: 432943816}
   password: {fileID: 1641968624}
   messageManager: {fileID: 1656906852}
@@ -4121,7 +4129,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1241796826}
-        m_MethodName: Login
+        m_MethodName: SendRequest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4769,6 +4777,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd5ffbef9c35ba47ab2065364807a6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkManager: {fileID: 211679368}
+  dataManager: {fileID: 881271282}
   serverAddress: {fileID: 1077775394}
   port: {fileID: 1249579657}
   messageManager: {fileID: 1656906852}
@@ -6002,7 +6012,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 912047911}
-        m_MethodName: SignUp
+        m_MethodName: SendRequest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

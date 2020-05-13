@@ -87,13 +87,14 @@
      <Compile Include="Assets\Scripts\StartScene\ClickableText\Login.cs" />
      <Compile Include="Assets\Scripts\StartScene\ClickableText\SignUp.cs" />
      <Compile Include="Assets\Scripts\StartScene\ClickableText\Start.cs" />
-     <Compile Include="Assets\Scripts\StartScene\ConnectManager.cs" />
      <Compile Include="Assets\Scripts\StartScene\Data\DataManager.cs" />
      <Compile Include="Assets\Scripts\StartScene\Data\PlayerData.cs" />
-     <Compile Include="Assets\Scripts\StartScene\LoginManager.cs" />
      <Compile Include="Assets\Scripts\StartScene\MessageManager.cs" />
+     <Compile Include="Assets\Scripts\StartScene\NetworkDataRequest\ConnectManager.cs" />
+     <Compile Include="Assets\Scripts\StartScene\NetworkDataRequest\LoginManager.cs" />
+     <Compile Include="Assets\Scripts\StartScene\NetworkDataRequest\NetworkDataRequest.cs" />
+     <Compile Include="Assets\Scripts\StartScene\NetworkDataRequest\SignUpManager.cs" />
      <Compile Include="Assets\Scripts\StartScene\NetworkManager.cs" />
-     <Compile Include="Assets\Scripts\StartScene\SignUpManager.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>H:/UnityProjects/NE_TPS_Client&amp;Server/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>

@@ -5,83 +5,86 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
+    public NetworkManager networkManager;
     public static PlayerData PlayerData;
+
+    private bool _isWaiting;
 
     // Start is called before the first frame update
     void Awake()
     {
         DontDestroyOnLoad(this);
     }
-
+    
     private void OnApplicationQuit()
     {
         SavePlayerData();
     }
 
-    public static bool SignUp(string userId, string userName, byte[] password)
+    public void Connect(string host, int port, Action<string> OnRecieveData)
     {
-
-        NetworkManager.Send("Register;" + userName +";" + password + ";" );
-        var result = NetworkManager.Receive();
-        if (result == "Succeeded")
-            return true;
-        if (result == "Failed")
-            return false;
-        //unknown data from server
-        Debug.Log("Unknown data from server");
-        return false;
+        networkManager.StartConnection(host,port);
+        networkManager.Send("Connect;");
+        networkManager.Receive();
+        StartCoroutine(WaitingForReceiving(OnRecieveData));
     }
 
-    public static bool VerifyAccount(string userId, byte[] password)
+    public void SignUp(string userId, string userName, string password, Action<string> OnRecieveData)
     {
 
-        NetworkManager.Send("Verify;" + userId + ";" + password + ";");
-        var result = NetworkManager.Receive();
-        if (result == "Succeeded")
-            return true;
-        if (result == "Failed")
-            return false;
-        //unknown data from server
-        Debug.Log("Unknown data from server");
-        return false;
+        networkManager.Send("Register;" + userId + ";" + userName +";" + password + ";" );
+        networkManager.Receive();
+        
+        StartCoroutine(WaitingForReceiving(OnRecieveData));
+    }
+    
+    public void VerifyAccount(string userId, string password, Action<string> OnRecieveData)
+    {
+
+        networkManager.Send("Verify;" + userId + ";" + password + ";");
+        networkManager.Receive();
+        StartCoroutine(WaitingForReceiving(OnRecieveData));
     }
 
-    public static bool CheckAccountExist(string userId)
+    public void CheckAccountExist(string userId, Action<string> OnRecieveData)
     {
-        NetworkManager.Send("CheckAccount;" + userId);
-        var result = NetworkManager.Receive();
-        if (result == "Succeeded")
-            return true;
-        if (result == "Failed")
-            return false;
-        //unknown data from server
-        Debug.Log("Unknown data from server");
-        return false;
+        networkManager.Send("Check;" + userId);
+        networkManager.Receive();
+        StartCoroutine(WaitingForReceiving(OnRecieveData));
     }
 
 
-    public static bool LoadPlayerData()
+    public void LoadPlayerData()
     {
         if (PlayerData.userId == null)
         {
             Debug.Log("Unknown Error: User hasn't logged in");
-            return false;
         }
 
-        NetworkManager.Send("LoadPlayerData;" + PlayerData.userId);
+        networkManager.Send("Load;" + PlayerData.userId);
+        networkManager.Receive();
 
-        var data = NetworkManager.Receive();
-
-        Debug.Log(data);
-        return true;
     }
 
-    public static bool SavePlayerData()
+    public void SavePlayerData()
     {
         if(PlayerData != null)
-            NetworkManager.Send("SavePlayerData;" + PlayerData.userId);
+            networkManager.Send("SavePlayerData;" + PlayerData.userId);
+        
 
-        return true;
+    }
+
+
+    private IEnumerator WaitingForReceiving (Action<string> OnRecieveData)
+    {
+        Debug.Log("Waiting For Receiving...");
+        _isWaiting = true;
+        yield return new WaitUntil(() => networkManager.finishedReceiving);
+        Debug.Log("End Receiving...");
+        _isWaiting = false;
+        Debug.Log("Fetched Data");
+        var data = networkManager.FetchReceivedData();
+        OnRecieveData(data);
 
     }
 }

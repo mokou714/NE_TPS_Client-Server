@@ -55,15 +55,18 @@
               <e p="SignUp.cs" t="Include" />
               <e p="Start.cs" t="Include" />
             </e>
-            <e p="ConnectManager.cs" t="Include" />
             <e p="Data" t="Include">
               <e p="DataManager.cs" t="Include" />
               <e p="PlayerData.cs" t="Include" />
             </e>
-            <e p="LoginManager.cs" t="Include" />
             <e p="MessageManager.cs" t="Include" />
+            <e p="NetworkDataRequest" t="Include">
+              <e p="ConnectManager.cs" t="Include" />
+              <e p="LoginManager.cs" t="Include" />
+              <e p="NetworkDataRequest.cs" t="Include" />
+              <e p="SignUpManager.cs" t="Include" />
+            </e>
             <e p="NetworkManager.cs" t="Include" />
-            <e p="SignUpManager.cs" t="Include" />
           </e>
         </e>
       </e>
