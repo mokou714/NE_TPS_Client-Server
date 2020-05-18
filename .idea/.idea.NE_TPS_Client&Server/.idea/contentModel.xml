@@ -53,6 +53,7 @@
             </e>
             <e p="Pickables" t="Include">
               <e p="AmmoSupply.cs" t="Include" />
+              <e p="ArrowSupply.cs" t="Include" />
               <e p="HealthPotion.cs" t="Include" />
               <e p="Pickable.cs" t="Include" />
             </e>

@@ -10,6 +10,7 @@ public class ArrowSkillManager : MonoBehaviour
     public int arrowCount;
     
     //proerties
+    [SerializeField] private Text arrowCountUI;
     [SerializeField] private BaseArrow[] regularArrow;
     [SerializeField] private BaseArrow[] piercingArrow;
     [SerializeField] private BaseArrow[] stunningArrow;
@@ -46,6 +47,7 @@ public class ArrowSkillManager : MonoBehaviour
         _playerController = GetComponent<PlayerController>();
         _screenCenter = new Vector3(Screen.width/2f,Screen.height/2f,0f);
         _currentForce = minShootForce;
+        arrowCountUI.text = arrowCount.ToString();
         InitArrows();
     }
 
@@ -103,6 +105,7 @@ public class ArrowSkillManager : MonoBehaviour
                 _currentArrow.Shoot(dir, arrowLifetime, _currentForce * 200f * dir);
                 _lastShootTime = Time.time;
                 arrowCount--;
+                arrowCountUI.text = arrowCount.ToString();
                 _isDrawing = false;
                 _currentForce = minShootForce;
                 arrowOrigin.localPosition = _defaultArrowOriginPosition;

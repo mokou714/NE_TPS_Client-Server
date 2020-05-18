@@ -10,12 +10,15 @@ public class HealthPotion : Pickable
     protected override void PickUp(GameObject player)
     {
         player.GetComponent<PlayerHealthManager>().IncreaseHealth(HealthPoint);
-        Destroy(gameObject);
+        
     }
 
     protected override void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
+        {
             PickUp(other.gameObject);
+            Destroy(gameObject);
+        }
     }
 }

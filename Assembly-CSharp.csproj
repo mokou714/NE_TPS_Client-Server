@@ -84,6 +84,7 @@
      <Compile Include="Assets\Scripts\MainGame\Health\EnemyHealthManager.cs" />
      <Compile Include="Assets\Scripts\MainGame\Health\PlayerHealthManager.cs" />
      <Compile Include="Assets\Scripts\MainGame\Pickables\AmmoSupply.cs" />
+     <Compile Include="Assets\Scripts\MainGame\Pickables\ArrowSupply.cs" />
      <Compile Include="Assets\Scripts\MainGame\Pickables\HealthPotion.cs" />
      <Compile Include="Assets\Scripts\MainGame\Pickables\Pickable.cs" />
      <Compile Include="Assets\Scripts\MainGame\UI\ArrowIconUI.cs" />

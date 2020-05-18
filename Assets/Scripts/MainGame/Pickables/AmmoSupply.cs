@@ -13,12 +13,16 @@ public class AmmoSupply : Pickable
         var shootManager = player.GetComponent<PlayerShootManager>();
         shootManager.backUpAmmo += ammo;
         backupAmmoUI.text = shootManager.backUpAmmo.ToString();
+        
     }
 
     protected override void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
+        {
             PickUp(other.gameObject);
+            Destroy(gameObject);
+        }
     }
 
 }
