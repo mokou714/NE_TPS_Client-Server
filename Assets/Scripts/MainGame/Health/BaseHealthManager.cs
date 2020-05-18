@@ -8,7 +8,7 @@ public class BaseHealthManager : MonoBehaviour
     protected bool burstMode;
     
     //status
-    private bool _isAlive = true;
+    private CharacterStatus _status;
     
     //other components
     private BaseAnimationController _animationController;
@@ -16,31 +16,34 @@ public class BaseHealthManager : MonoBehaviour
    
     protected virtual void Start()
     {
+        _status = GetComponent<CharacterStatus>();
         _animationController = GetComponent<BaseAnimationController>();
     }
 
-    public virtual void DealDamage(int damage)
+    public virtual bool DealDamage(int damage)
     {
-        if (!_isAlive) return;
+        if (!_status.isAlive) return false;
         
         health -= damage;
 
-        if (health > maxHealth)
-        {
-            health = maxHealth;
-            _animationController.TakeDamage();
-        }
-        else if (health < 0)
+        
+        if (health < 0)
         {
             health = 0;
             CharacterDied();
         }
-        
+        else
+        {
+            _animationController.TakeDamage();
+        }
+
+        return true;
+
     }
 
     public virtual void IncreaseHealth(int healthPoint)
     {
-        if (!_isAlive) return;
+        if (!_status.isAlive) return;
         
         health += healthPoint;
         if (health > maxHealth)
@@ -52,8 +55,8 @@ public class BaseHealthManager : MonoBehaviour
 
     protected virtual void CharacterDied()
     {
-        _isAlive = false;
-        _animationController.Die();
+       _status.isAlive = false;
+       _animationController.Die();
     }
 
   

@@ -6,7 +6,7 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     public NetworkManager networkManager;
-    public static PlayerData PlayerData;
+    public static PlayerData PlayerData = new PlayerData();
 
     private bool _isWaiting;
 
@@ -54,24 +54,17 @@ public class DataManager : MonoBehaviour
     }
 
 
-    public void LoadPlayerData()
+    public void LoadPlayerData(Action<string> OnRecieveData)
     {
-        if (PlayerData.userId == null)
-        {
-            Debug.Log("Unknown Error: User hasn't logged in");
-        }
-
         networkManager.Send("Load;" + PlayerData.userId);
         networkManager.Receive();
-
+        StartCoroutine(WaitingForReceiving(OnRecieveData));
     }
 
     public void SavePlayerData()
     {
-        if(PlayerData != null)
-            networkManager.Send("SavePlayerData;" + PlayerData.userId);
-        
-
+        //todo
+        networkManager.Send("Save;" + PlayerData.userId);
     }
 
 

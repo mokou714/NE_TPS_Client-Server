@@ -9,17 +9,22 @@ using UnityEngine.UI;
 public class ConnectManager : NetworkDataRequest{
     public InputField serverAddress;
     public InputField port;
-    public MessageManager messageManager;
-    public CameraTransition cameraTransition;
 
     //invoked by button
     public override void SendRequest()
     {
-        if (networkManager.socketReady) return;
+        //already connected
+        if (networkManager.socketReady)
+        {
+            cameraTransition.NextTransition();
+            return;
+        }
         
+        //start connecting
         messageManager.Display("Connecting to server...");
         dataManager.Connect(serverAddress.text, int.Parse(port.text), OnReceiveData);
 
+        //massage display
         if (!networkManager.socketReady)
         {
             messageManager.Display(networkManager.errorMessage);

@@ -6,9 +6,17 @@ using UnityEngine.UI;
 
 public class Login : ClickableText
 {
-    [SerializeField] private GameObject loginWindow; 
-    private void OnMouseDown()
+    [SerializeField] private GameObject loginWindow;
+    [SerializeField] private ClickableText signUp;
+    [SerializeField] private CanvasBackButton mainBackButton;
+    protected override void OnMouseUp()
     {
-        loginWindow.SetActive(true);
+        base.OnMouseUp();
+        if (isClickable && mouseDown)
+        {
+            loginWindow.SetActive(true);
+            isClickable = signUp.isClickable = false;
+            mainBackButton.gameObject.SetActive(false);
+        }
     }
 }

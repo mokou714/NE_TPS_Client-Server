@@ -5,19 +5,22 @@ using UnityEngine.AI;
 
 public abstract class BaseShootManager : MonoBehaviour
 {
+    //status data
+    public int maxAmmo;
+    public int currentAmmo;
+    public int backUpAmmo;
+    
+    //properties
     [SerializeField] protected GameObject bulletPrefab;
     [SerializeField] protected Transform bulletInitTransform;
-    [SerializeField] protected int maxAmmo;
-    [SerializeField] protected int currentAmmo;
-    [SerializeField] protected int backUpAmmo;
     [SerializeField] protected float fireCDTime;
     [SerializeField] protected float bulletSpeed;
     [SerializeField] protected float bulletLifetime;
     [SerializeField] protected int layerMask;
     [SerializeField] protected bool burstMode;
     [SerializeField] protected int bulletDamage;
-    
-    //helper data
+
+    //helper vars
     protected bool _isShooting = false;
     protected bool _isReloading = false;
     protected Bullet[] _bulletPool;
@@ -25,10 +28,14 @@ public abstract class BaseShootManager : MonoBehaviour
     //other components
     protected BaseCharacterController _characterController;
     protected BaseAnimationController _animationController;
+    
+    //status
+    protected CharacterStatus _status;
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        _status = GetComponent<CharacterStatus>();
         _characterController = GetComponent<BaseCharacterController>();
         _animationController = GetComponent<BaseAnimationController>();
         InitBulletPool();
@@ -62,6 +69,8 @@ public abstract class BaseShootManager : MonoBehaviour
 
     protected virtual void Shoot()
     {
+        //check alive
+        if(!_status.isAlive) return;
         //check base character state
         if(_characterController.posture == BodyPosture.GUARD) return;
         //check shooting state
@@ -74,6 +83,8 @@ public abstract class BaseShootManager : MonoBehaviour
 
     protected virtual void Reload()
     {
+        //check alive
+        if(!_status.isAlive) return;
         if (_isReloading || _isShooting || backUpAmmo == 0) return;
         _isReloading = true;
         _animationController.Reload();
@@ -81,6 +92,8 @@ public abstract class BaseShootManager : MonoBehaviour
 
     protected virtual void SwitchMode()
     {
+        //check alive
+        if(!_status.isAlive) return;
         if (_characterController.posture == BodyPosture.GUARD) return;
         burstMode = !burstMode;
     }

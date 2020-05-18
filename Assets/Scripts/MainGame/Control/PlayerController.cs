@@ -39,6 +39,8 @@ public class PlayerController : BaseCharacterController
 
     protected override void Move()
     {
+        if (!_status.isAlive) return;
+        
         var movingDir = Vector3.zero;
 
         var isWalking = !Input.GetKey(KeyCode.LeftShift);
@@ -147,6 +149,7 @@ public class PlayerController : BaseCharacterController
     }
     protected override void UpdateBodyYAxisRotation()
     {
+        if (!_status.isAlive) return;
         // Vector3 camPivotRotation = cameraController.pivot.transform.localEulerAngles;
         // camPivotRotation.x = camPivotRotation.z = 0; //only keep Y axis rotation
         // body.transform.localRotation = Quaternion.Euler(camPivotRotation);
@@ -165,8 +168,9 @@ public class PlayerController : BaseCharacterController
     }
     protected override void UpdateBodyXAxisRotation()
     {
+        if (!_status.isAlive) return;
+        
         //rotate body(spine) vertically, override spine animation
-
         if (posture == BodyPosture.COMBAT)
         {
             

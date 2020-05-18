@@ -39,10 +39,12 @@ public class PlayerHealthManager : BaseHealthManager{
     }
     
 
-    public override void DealDamage(int damage)
+    public override bool DealDamage(int damage)
     {
-        base.DealDamage(damage);
+        if (!base.DealDamage(damage)) return false;
         InitHealthBarAnim(damage);
+        return true;
+        
     }
 
     public override void IncreaseHealth(int healthPoint)

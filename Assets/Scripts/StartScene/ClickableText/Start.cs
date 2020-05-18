@@ -6,8 +6,10 @@ using UnityEngine;
 public class Start : ClickableText
 {
     [SerializeField] private GameObject connectWindow;
-    private void OnMouseDown()
+    protected override void OnMouseUp()
     {
-       connectWindow.SetActive(true);
+        base.OnMouseUp(); 
+        if(isClickable && mouseDown) 
+            connectWindow.SetActive(true);
     }
 }

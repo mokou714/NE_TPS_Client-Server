@@ -11,22 +11,18 @@ public abstract class Pickable : MonoBehaviour
     [Range(0f,50f)]
     public float translateAmplitude;
     [SerializeField] private GameObject model;
-    protected PlayerController _player;
-    protected abstract void PickUp();
+
+    
+    protected abstract void PickUp(GameObject obj);
+    protected abstract void OnTriggerEnter(Collider other);
 
     protected virtual void Update()
     {
         Animate();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            _player = other.gameObject.GetComponent<PlayerController>();
-            PickUp();
-        }
-    }
+    
+    
 
     private void Animate()
     {

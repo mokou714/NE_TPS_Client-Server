@@ -6,7 +6,13 @@ using UnityEngine;
 public class Knife : MonoBehaviour
 {
     private int _damage;
-    [SerializeField] private EnemyAIController _aiController;
+    private AIStatus _status;
+
+
+    private void Start()
+    {
+        _status = GetComponent<AIStatus>();
+    }
 
     public void SetDamage(int damage)
     {
@@ -15,7 +21,7 @@ public class Knife : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_aiController.AiState == AIState.ATTACK && other.gameObject.CompareTag("Player"))
+        if (_status.aiState == AIState.ATTACK && other.gameObject.CompareTag("Player"))
         {
             var playerController = other.GetComponent<BaseHealthManager>();
             playerController.DealDamage(_damage);

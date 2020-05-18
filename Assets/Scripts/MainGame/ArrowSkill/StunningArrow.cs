@@ -1,18 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
-public class StunningArrow : MonoBehaviour
+public class StunningArrow : BaseArrow
 {
-    // Start is called before the first frame update
-    void Start()
+    public float stunningRange;
+    public int stunningTime;
+
+    private List<SkillEffectDealer> stunnedCharacters = new List<SkillEffectDealer>();
+    
+    protected override void OnTriggerEnter(Collider other)
     {
+        //for now: only play can shoot arrows
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            InitStunningEffect(other.gameObject);
+        }
+        Reset();
+    }
+    
+
+    private void InitStunningEffect(GameObject enemy)
+    {
+        //deal damage to this enemy
+        if (enemy.gameObject.GetComponent<EnemyHealthManager>().DealDamage(damage))
+        {
+            var skd = enemy.gameObject.GetComponent<SkillEffectDealer>();
+            skd.Stun(true, stunningTime);
+            stunnedCharacters.Add(skd);
+            damageMessageManager.ShowMessage(damage, enemy.gameObject.GetComponent<EnemyAIController>().Center.transform.position);
+        }
         
+        //deal damage to other enemies around
+        var others = Physics.OverlapSphere(enemy.GetComponent<EnemyAIController>().Center.transform.position, stunningRange);
+        foreach (var e in others)
+        {
+            //if can deal damage, then apply effect
+            if (e.gameObject.CompareTag("Enemy") &&
+                e.gameObject.GetComponent<EnemyHealthManager>().DealDamage(damage))
+            {
+                var skd = e.gameObject.GetComponent<SkillEffectDealer>();
+                skd.Stun(true, stunningTime);
+                damageMessageManager.ShowMessage(damage, e.gameObject.GetComponent<EnemyAIController>().Center.transform.position);
+                stunnedCharacters.Add(skd);
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 public class PlayerShootManager : BaseShootManager
 {
@@ -24,6 +26,7 @@ public class PlayerShootManager : BaseShootManager
     
     protected override void Start()
     {
+        base.Start();
         _characterController = GetComponent<PlayerController>();
         _animationController = GetComponent<PlayerAnimationController>();
         _arrowSkillManager = GetComponent<ArrowSkillManager>();
@@ -31,6 +34,7 @@ public class PlayerShootManager : BaseShootManager
         currentAmmoUI.text = maxAmmo.ToString();
         backupAmmoUI.text = backUpAmmo.ToString();
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
         _screenCenter = new Vector3(Screen.width/2f,Screen.height/2f,0f);
         InitBulletPool();
     }
@@ -39,8 +43,6 @@ public class PlayerShootManager : BaseShootManager
     protected override void Update()
     {
         base.Update();
-        CursorState();
-        
         _Debug();
     }
 
@@ -110,13 +112,7 @@ public class PlayerShootManager : BaseShootManager
         }
     }
 
-    private void CursorState()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Cursor.visible = true;
-        else if (Input.GetMouseButton(0) && Cursor.visible)
-            Cursor.visible = false;
-    }
+
 
     protected override IEnumerator ShootBullet(int number)
     {

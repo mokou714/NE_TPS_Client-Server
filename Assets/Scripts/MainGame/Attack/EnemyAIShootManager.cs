@@ -9,7 +9,7 @@ public class EnemyAIShootManager : BaseShootManager
     {
         base.Start();
         _characterController = GetComponent<EnemyAIController>();
-        
+        _status = GetComponent<AIStatus>();
     }
 
     // Update is called once per frame
@@ -21,6 +21,7 @@ public class EnemyAIShootManager : BaseShootManager
 
     public override Vector3 GetAimingDirection()
     {
+        
         var aiController = (EnemyAIController) _characterController;
         return (aiController.EyeTransform.position - aiController.TargetPlayer.Center.position).normalized;
     }
@@ -33,14 +34,14 @@ public class EnemyAIShootManager : BaseShootManager
 
     protected override void Shoot()
     {
+        if (!_status.isAlive) return;
         //automatic reloading
         if (currentAmmo == 0)
         {
             Reload();
             return;
         }
-        var aiController = (EnemyAIController) _characterController;
-        if(aiController.AiState == AIState.ATTACK)
+        if( ((AIStatus)_status).aiState == AIState.ATTACK)
             base.Shoot();
         
     }

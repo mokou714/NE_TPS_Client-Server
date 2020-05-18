@@ -73,9 +73,11 @@ public class Bullet : MonoBehaviour
             case "Player":
                 var characterController = other.gameObject.GetComponent<BaseCharacterController>();
                 var healthManager = other.gameObject.GetComponent<BaseHealthManager>();
-                if(_damageMessageManager != null)
-                    _damageMessageManager.ShowMessage(_damage, characterController.Center.position); 
-                healthManager.DealDamage(_damage);
+                //check if dealt damage successfully, then show message
+                if (healthManager.DealDamage(_damage) && _damageMessageManager != null)
+                {
+                    _damageMessageManager.ShowMessage(_damage, characterController.Center.position);
+                }
                 Reset(); 
                 break; 
             default:

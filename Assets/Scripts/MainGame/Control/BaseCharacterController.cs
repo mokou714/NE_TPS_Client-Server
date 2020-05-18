@@ -18,6 +18,9 @@ public abstract class BaseCharacterController : MonoBehaviour
     public bool isMoving;
     public BodyPosture posture = BodyPosture.GUARD;
     
+    //status class
+    protected CharacterStatus _status;
+    
     //other components
     protected BaseAnimationController _animationController;
     protected BaseShootManager _shootManager;
@@ -29,6 +32,7 @@ public abstract class BaseCharacterController : MonoBehaviour
         _animationController = GetComponent<BaseAnimationController>();
         _shootManager = GetComponent<BaseShootManager>();
         _rigidbody = GetComponent<Rigidbody>();
+        _status = GetComponent<CharacterStatus>();
         facingDir =  body.transform.rotation * Vector3.forward;
     }
 

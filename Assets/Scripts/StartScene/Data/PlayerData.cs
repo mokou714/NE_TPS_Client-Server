@@ -12,5 +12,5 @@ public class PlayerData : MonoBehaviour
     public int exp;
     public int totalKills;
     public string playingTime;
-
+    public int currentLevel;
 }

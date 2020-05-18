@@ -24,40 +24,61 @@
               <e p="Bullet.cs" t="Include" />
               <e p="EnemyAIMeleeManager.cs" t="Include" />
               <e p="EnemyAIShootManager.cs" t="Include" />
+              <e p="Knife.cs" t="Include" />
               <e p="PlayerShootManager.cs" t="Include" />
+              <e p="SkillEffectDealer.cs" t="Include" />
             </e>
-            <e p="BodyPosture.cs" t="Include" />
-            <e p="BulletIconAnim.cs" t="Include" />
+            <e p="Camera" t="Include">
+              <e p="TPSCameraController.cs" t="Include" />
+            </e>
             <e p="Control" t="Include">
               <e p="AIState.cs" t="Include" />
+              <e p="AIStatus.cs" t="Include" />
               <e p="BaseCharacterController.cs" t="Include" />
+              <e p="BodyPosture.cs" t="Include" />
+              <e p="CharacterStatus.cs" t="Include" />
               <e p="EnemyAIController.cs" t="Include" />
               <e p="PlayerController.cs" t="Include" />
             </e>
-            <e p="DamageMessage.cs" t="Include" />
-            <e p="DamageMessageManager.cs" t="Include" />
+            <e p="Data" t="Include">
+              <e p="PlayerDataSaverAndLoader.cs" t="Include" />
+            </e>
+            <e p="GameState" t="Include">
+              <e p="GameStateManager.cs" t="Include" />
+            </e>
             <e p="Health" t="Include">
               <e p="BaseHealthManager.cs" t="Include" />
+              <e p="EnemyHealthManager.cs" t="Include" />
               <e p="PlayerHealthManager.cs" t="Include" />
             </e>
-            <e p="Knife.cs" t="Include" />
             <e p="Pickables" t="Include">
+              <e p="AmmoSupply.cs" t="Include" />
               <e p="HealthPotion.cs" t="Include" />
               <e p="Pickable.cs" t="Include" />
             </e>
-            <e p="TPSCameraController.cs" t="Include" />
+            <e p="UI" t="Include">
+              <e p="ArrowIconUI.cs" t="Include" />
+              <e p="BulletIconAnim.cs" t="Include" />
+              <e p="DamageMessage.cs" t="Include" />
+              <e p="DamageMessageManager.cs" t="Include" />
+              <e p="SettingManager.cs" t="Include" />
+            </e>
           </e>
           <e p="StartScene" t="Include">
             <e p="CameraTransition.cs" t="Include" />
+            <e p="CanvasBackButton.cs" t="Include" />
             <e p="ClickableText" t="Include">
               <e p="ClickableText.cs" t="Include" />
+              <e p="Continue.cs" t="Include" />
               <e p="Login.cs" t="Include" />
+              <e p="Quit.cs" t="Include" />
               <e p="SignUp.cs" t="Include" />
               <e p="Start.cs" t="Include" />
             </e>
             <e p="Data" t="Include">
               <e p="DataManager.cs" t="Include" />
               <e p="PlayerData.cs" t="Include" />
+              <e p="StatisticsLoader.cs" t="Include" />
             </e>
             <e p="MessageManager.cs" t="Include" />
             <e p="NetworkDataRequest" t="Include">

@@ -13,13 +13,9 @@ public class EnemyAIController : BaseCharacterController
     [SerializeField] private Transform eyeTransform;
     [SerializeField] private PlayerController[] players;
 
-    //AI status
-    [SerializeField] private AIState _aiState;
-    [SerializeField] private PlayerController _targetPlayer;
-    [SerializeField] private Vector3 aimingDir;
-
     //helper data
     private float vigilantStartTime;
+    private PlayerController _targetPlayer;
 
     //components
     private NavMeshAgent _agent;
@@ -29,6 +25,7 @@ public class EnemyAIController : BaseCharacterController
     {
         base.Start();
         _agent = GetComponent<NavMeshAgent>();
+        _status = GetComponent<AIStatus>();
     }
 
     // Update is called once per frame
@@ -52,27 +49,29 @@ public class EnemyAIController : BaseCharacterController
 
     private void DetectPlayer()
     {
-        if (_aiState != AIState.DETECT && _aiState != AIState.VIGILANT ) return;
+        if (!_status.isAlive || _status.isStunned) return;
+        if ( ((AIStatus)_status).aiState != AIState.DETECT &&  ((AIStatus)_status).aiState != AIState.VIGILANT ) return;
 
         if (FindPlayer())
         {
-            if(_aiState == AIState.DETECT)
+            if( ((AIStatus)_status).aiState == AIState.DETECT)
                 SwitchBodyPosture();
-            _aiState = AIState.CHASE;
+            ((AIStatus)_status).aiState = AIState.CHASE;
             Debug.Log("Found Player");
         }
     }
 
     private void ChasePlayer()
     {
-        if (_aiState != AIState.CHASE) return;
+        if (!_status.isAlive || _status.isStunned) return;
+        if (((AIStatus)_status).aiState != AIState.CHASE) return;
         if (_targetPlayer == null) throw new Exception("No Target Player");
 
         var distance = (_targetPlayer.Center.position - Center.position).magnitude;
 
         if (distance < attackDistance)
         {
-            _aiState = AIState.ATTACK;
+            ((AIStatus)_status).aiState = AIState.ATTACK;
             _agent.isStopped = true;
             _animationController.SetWalk(false, Direction.FORWARD);
         }
@@ -86,10 +85,11 @@ public class EnemyAIController : BaseCharacterController
 
     private void StayingVigilant()
     {
-        if (_aiState != AIState.VIGILANT) return;
+        if (!_status.isAlive || _status.isStunned) return;
+        if (((AIStatus)_status).aiState != AIState.VIGILANT) return;
         if (Time.time - vigilantStartTime > vigilantTime)
         {
-            _aiState = AIState.DETECT;
+            ((AIStatus)_status).aiState = AIState.DETECT;
             SwitchBodyPosture();
         }
         
@@ -98,7 +98,8 @@ public class EnemyAIController : BaseCharacterController
 
     private void LoseTargetPlayer()
     {
-        if (_aiState == AIState.DETECT || _aiState == AIState.VIGILANT) return;
+        if (!_status.isAlive || _status.isStunned) return;
+        if (((AIStatus)_status).aiState == AIState.DETECT || ((AIStatus)_status).aiState == AIState.VIGILANT) return;
         
         if (_targetPlayer == null) throw new Exception("No Target Player");
 
@@ -107,7 +108,7 @@ public class EnemyAIController : BaseCharacterController
         //to detect state
         if (distance > viewDistance)
         {
-            _aiState = AIState.VIGILANT;
+            ((AIStatus)_status).aiState = AIState.VIGILANT;
             _targetPlayer = null;
             _animationController.SetWalk(false, Direction.FORWARD);
             _agent.isStopped = true;
@@ -117,7 +118,7 @@ public class EnemyAIController : BaseCharacterController
         //to chase state
         else if(distance > attackDistance)
         {
-            _aiState = AIState.CHASE;
+            ((AIStatus)_status).aiState = AIState.CHASE;
         }
     }
 
@@ -172,6 +173,7 @@ public class EnemyAIController : BaseCharacterController
 
     protected override void UpdateBodyYAxisRotation()
     {
+        if (!_status.isAlive || _status.isStunned) return;
         if (_targetPlayer == null) return;
 
         facingDir = (_targetPlayer.Center.position - Center.position).normalized;
@@ -185,8 +187,19 @@ public class EnemyAIController : BaseCharacterController
     {
         //throw new System.NotImplementedException();
     }
+
+    public void StopMoving()
+    {
+        //enemy can only walk
+        _animationController.SetWalk(false, Direction.FORWARD);
+        if(posture != BodyPosture.GUARD)
+            SwitchBodyPosture();
+        ((AIStatus)_status).aiState = AIState.DETECT;
+        _targetPlayer = null;
+        
+        _agent.isStopped = true;
+    }
     
     public Transform EyeTransform => eyeTransform;
     public PlayerController TargetPlayer => _targetPlayer;
-    public AIState AiState => _aiState;
 }

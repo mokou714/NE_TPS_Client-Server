@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,9 +11,9 @@ public class SignUpManager : NetworkDataRequest
     public InputField userId;
     public InputField playerName;
     public InputField password;
-    public MessageManager messageManager;
-
-    private bool accountExists;
+    public CanvasBackButton mainBackButton;
+    
+    
     //invoked by button
     public override void SendRequest()
     {
@@ -26,8 +27,7 @@ public class SignUpManager : NetworkDataRequest
         
         // ask if account exists first
         dataManager.CheckAccountExist(userId.text, OnReceiveCheckingResult);
-        
-        
+
     }
 
     private void OnReceiveCheckingResult(string data)
@@ -48,6 +48,12 @@ public class SignUpManager : NetworkDataRequest
         else
         {
             messageManager.Display("Account already exists");
+            messageManager.SetOnCloseActions( new List<Action> {
+                    () => { mainBackButton.gameObject.SetActive(true); }
+                }
+            );
+            //reset inputfields
+            userId.text = playerName.text = password.text = "";
         }
     }
 
@@ -56,11 +62,18 @@ public class SignUpManager : NetworkDataRequest
         if (data == "success")
         {
             messageManager.Display("Account created");
+            messageManager.SetOnCloseActions( new List<Action> {
+                    () => { mainBackButton.gameObject.SetActive(true); }
+                }
+            );
         }
         else
         {
             Debug.Log(data);
             messageManager.Display("Failed to sign up");
         }
+        
+        //reset inputfields
+        userId.text = playerName.text = password.text = "";
     }
 }

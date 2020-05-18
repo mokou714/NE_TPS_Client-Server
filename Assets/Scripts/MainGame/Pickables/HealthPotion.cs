@@ -6,11 +6,16 @@ using UnityEngine;
 public class HealthPotion : Pickable
 {
     public int HealthPoint;
-    private PlayerHealthManager _playerHealth;
-    protected override void PickUp()
+    
+    protected override void PickUp(GameObject player)
     {
-        _playerHealth = _player.GetComponent<PlayerHealthManager>();
-        _playerHealth.IncreaseHealth(HealthPoint);
+        player.GetComponent<PlayerHealthManager>().IncreaseHealth(HealthPoint);
         Destroy(gameObject);
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Player"))
+            PickUp(other.gameObject);
     }
 }

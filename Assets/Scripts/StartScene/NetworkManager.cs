@@ -43,12 +43,16 @@ public class NetworkManager : MonoBehaviour
 
     public void Send(string data)
     {
+        if (!socketReady) return;
+        
         streamWriter.Write(data);
         streamWriter.Flush();
     }
     
     public void Receive()
     {
+        if (!socketReady) return;
+        
         //StartCoroutine(ProcessReceive());
         finishedReceiving = false;
     }

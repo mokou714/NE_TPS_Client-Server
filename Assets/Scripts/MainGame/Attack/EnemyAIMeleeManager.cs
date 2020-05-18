@@ -8,6 +8,7 @@ public class EnemyAIMeleeManager : MonoBehaviour
     [SerializeField] private float attackCDTime;
     private EnemyAIController _aiController;
     private BaseAnimationController _animationController;
+    private AIStatus _status;
     private float _lastAttackTime;
     private bool _isAttacking;
     
@@ -18,6 +19,7 @@ public class EnemyAIMeleeManager : MonoBehaviour
     {
         _aiController = GetComponent<EnemyAIController>();
         _animationController = GetComponent<BaseAnimationController>();
+        _status = GetComponent<AIStatus>();
         _knife.SetDamage(attackDamage);
         
     }
@@ -38,7 +40,7 @@ public class EnemyAIMeleeManager : MonoBehaviour
 
     private void KnifeAttack()
     {
-        if(_aiController.AiState == AIState.ATTACK && !_isAttacking)
+        if(_status.aiState == AIState.ATTACK && !_isAttacking)
         {
             _animationController.KnifeAttack();
             _lastAttackTime = Time.time;
