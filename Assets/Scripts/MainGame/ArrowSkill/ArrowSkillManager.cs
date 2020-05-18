@@ -102,7 +102,7 @@ public class ArrowSkillManager : MonoBehaviour
             //release
             if (Input.GetMouseButtonUp(0))
             {
-                _currentArrow.Shoot(dir, arrowLifetime, _currentForce * 200f * dir);
+                _currentArrow.Shoot(arrowLifetime, _currentForce * 200f * dir); //no need to specify shoot direction here
                 _lastShootTime = Time.time;
                 arrowCount--;
                 arrowCountUI.text = arrowCount.ToString();
@@ -204,30 +204,29 @@ public class ArrowSkillManager : MonoBehaviour
     {
         _currentArrow.isAiming = inAimingState;
         if(inAimingState)
-            _currentArrow.Activate();
+            _currentArrow.gameObject.SetActive(true);
         else 
-            _currentArrow.Deactivate();
+            _currentArrow.gameObject.SetActive(false);
     }
 
     private void SwitchArrowType()
     {
         if (!inAimingState || !Input.GetKeyDown(KeyCode.E) || _arrowIconUi._isSwitching) return;
-        
+
         _chosenArrowType = (_chosenArrowType + 1) % 3;
         _arrowIconUi.SwitchArrow();
 
         //deselect current arrow
         if (!(_currentArrow is null))
         {
-            _currentArrow.Deactivate();
+            _currentArrow.gameObject.SetActive(false);
             _currentArrow = null;
         }
 
         UpdateCurrentArrow();
-        
-        if( !(_currentArrow is null) )
-            _currentArrow.Activate();
+
+        if (!(_currentArrow is null))
+            _currentArrow.gameObject.SetActive(true);
     }
-    
 
 }

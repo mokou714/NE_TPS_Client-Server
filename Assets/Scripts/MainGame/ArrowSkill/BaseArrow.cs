@@ -19,6 +19,7 @@ public abstract class BaseArrow : MonoBehaviour
     //components
     private Rigidbody _rigidbody;
     [SerializeField] private MeshRenderer arrowMesh;
+    [SerializeField] private TrailRenderer trail;
     
     //helper data
     private float _lifetime;
@@ -46,8 +47,12 @@ public abstract class BaseArrow : MonoBehaviour
 
     protected virtual void Update()
     {
-        UpdateDirection();
         CheckLifetime();
+    }
+
+    protected virtual void LateUpdate()
+    {
+        UpdateDirection();
     }
 
     public void Initialize(Transform originalTransform)
@@ -57,46 +62,52 @@ public abstract class BaseArrow : MonoBehaviour
         transform.rotation = originalTransform.rotation;
         
     }
-
-    public void Activate()
+    
+    //display when switching to this arrow
+    public void OnEnable()
     {
-        arrowMesh.enabled = true;
+        isAiming = true;
         StartCoroutine(Shaking());
     }
+    
+    
 
-    public void Deactivate()
-    {
-        arrowMesh.enabled = false;
-        StopCoroutine(Shaking());
-    }
 
-    public void Shoot(Vector3 direction, float lifeTime, Vector3 shootForce)
+    public void Shoot(float lifeTime, Vector3 shootForce)
     {
         gameObject.SetActive(true);
-        transform.rotation = Quaternion.LookRotation(direction);
         _startTime = Time.time;
         _lifetime = lifeTime;
+       
+        transform.rotation = Quaternion.LookRotation(shootForce.normalized); //look at force direction
         _rigidbody.AddForce(shootForce);
+        
+        
         isAiming = false;
-        isOnAir = true;
+        //isOnAir = true;
         _rigidbody.isKinematic = false;
         transform.parent = null;
         Debug.Log("Shoot an arrow");
+        StartCoroutine(DelayTrailRendering(0.02f)); //velocity dir is downwards in first a few frames
+   
     }
     
     protected virtual void Reset()
     {
-        if(isAiming) return;
+        if(isAiming || !isOnAir) return;
 
         _rigidbody.velocity = Vector3.zero;
-        isAiming = true;
+        
+        isAiming = false;
         isOnAir = false;
         ShakingSpeed = _defaultShakingSpeed;
         ShakingRadious = _defaultShakingRadius;
         transform.position = _originalLocalTransform.position;
         transform.rotation = _originalLocalTransform.rotation;
+        trail.Clear();
+        trail.enabled = false;
         transform.parent = _parent;
-        Deactivate();
+        gameObject.SetActive(false);
         Debug.Log("Arrow Reset");
     }
     
@@ -104,14 +115,16 @@ public abstract class BaseArrow : MonoBehaviour
 
     protected virtual void UpdateDirection()
     {
-        if(isAiming) return;
+        if(isAiming || !isOnAir) return;
         
+        Debug.Log("update direction");
         transform.rotation = Quaternion.LookRotation(_rigidbody.velocity.normalized);
+
     }
 
     protected virtual void CheckLifetime()
     {
-        if (isAiming) return;
+        if(isAiming || !isOnAir) return;
         
         if(Time.time > _startTime + _lifetime)
             Reset();
@@ -137,6 +150,13 @@ public abstract class BaseArrow : MonoBehaviour
                 transform.position = _originalLocalTransform.position + new Vector3(xOffset, yOffset, zOffset);
             }
         }
-        
+    }
+
+
+    private IEnumerator DelayTrailRendering(float time)
+    {
+        yield return new WaitForSeconds(time);
+        trail.enabled = true;
+        isOnAir = true; // also delay updateDirection()
     }
 }

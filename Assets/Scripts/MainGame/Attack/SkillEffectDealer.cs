@@ -9,7 +9,11 @@ public class SkillEffectDealer : MonoBehaviour
 {
     private AIStatus _status;
     private EnemyAIController _aiController;
-
+    
+    //particle effect
+    [SerializeField] private GameObject dizzy;
+    [SerializeField] private ParticleSystem blood;
+    
     private float _startTime;
 
     private void Start()
@@ -26,8 +30,14 @@ public class SkillEffectDealer : MonoBehaviour
             _startTime = Time.time;
             _status.aiState = AIState.DETECT;
             _aiController.StopMoving();
+            dizzy.SetActive(true);
             StartCoroutine(StunningTimeChecking(stunningTime));
         }
+    }
+
+    public void BloodEffect()
+    {
+        blood.Play();
     }
     
     //check stunning time every frame
@@ -39,6 +49,7 @@ public class SkillEffectDealer : MonoBehaviour
             {
                 Debug.Log("Stunned enemies recovered");
                 _status.isStunned = false;
+                dizzy.SetActive(false);
                 break;
             }
             yield return new WaitForSeconds(Time.deltaTime);
