@@ -8,7 +8,7 @@ public class StunningArrow : BaseArrow
     public float stunningRange;
     public int stunningTime;
 
-    private List<SkillEffectDealer> stunnedCharacters = new List<SkillEffectDealer>();
+    private List<EffectManager> stunnedCharacters = new List<EffectManager>();
     
     protected override void OnTriggerEnter(Collider other)
     {
@@ -26,7 +26,7 @@ public class StunningArrow : BaseArrow
         //deal damage to this enemy
         if (enemy.gameObject.GetComponent<EnemyHealthManager>().DealDamage(damage))
         {
-            var skd = enemy.gameObject.GetComponent<SkillEffectDealer>();
+            var skd = enemy.gameObject.GetComponent<EffectManager>();
             skd.Stun(true, stunningTime);
             stunnedCharacters.Add(skd);
             damageMessageManager.ShowMessage(damage, enemy.gameObject.GetComponent<EnemyAIController>().Center.transform.position);
@@ -40,7 +40,7 @@ public class StunningArrow : BaseArrow
             if (e.gameObject.CompareTag("Enemy") &&
                 e.gameObject.GetComponent<EnemyHealthManager>().DealDamage(damage))
             {
-                var skd = e.gameObject.GetComponent<SkillEffectDealer>();
+                var skd = e.gameObject.GetComponent<EffectManager>();
                 skd.Stun(true, stunningTime);
                 damageMessageManager.ShowMessage(damage, e.gameObject.GetComponent<EnemyAIController>().Center.transform.position);
                 stunnedCharacters.Add(skd);

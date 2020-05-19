@@ -76,7 +76,6 @@ public class Bullet : MonoBehaviour
                 //check if dealt damage successfully, then show message
                 if (healthManager.DealDamage(_damage) && _damageMessageManager != null)
                 {
-                    other.GetComponent<SkillEffectDealer>().BloodEffect();
                     _damageMessageManager.ShowMessage(_damage, characterController.Center.position);
                 }
                 Reset(); 

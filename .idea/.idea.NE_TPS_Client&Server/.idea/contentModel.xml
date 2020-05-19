@@ -22,11 +22,11 @@
             <e p="Attack" t="Include">
               <e p="BaseShootManager.cs" t="Include" />
               <e p="Bullet.cs" t="Include" />
+              <e p="EffectManager.cs" t="Include" />
               <e p="EnemyAIMeleeManager.cs" t="Include" />
               <e p="EnemyAIShootManager.cs" t="Include" />
               <e p="Knife.cs" t="Include" />
               <e p="PlayerShootManager.cs" t="Include" />
-              <e p="SkillEffectDealer.cs" t="Include" />
             </e>
             <e p="Camera" t="Include">
               <e p="TPSCameraController.cs" t="Include" />
@@ -59,9 +59,11 @@
             </e>
             <e p="UI" t="Include">
               <e p="ArrowIconUI.cs" t="Include" />
+              <e p="Billboard.cs" t="Include" />
               <e p="BulletIconAnim.cs" t="Include" />
               <e p="DamageMessage.cs" t="Include" />
               <e p="DamageMessageManager.cs" t="Include" />
+              <e p="EnemyHealthBar.cs" t="Include" />
               <e p="SettingManager.cs" t="Include" />
             </e>
           </e>

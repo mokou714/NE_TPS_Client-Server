@@ -8,16 +8,18 @@ public class BaseHealthManager : MonoBehaviour
     protected bool burstMode;
     
     //status
-    private CharacterStatus _status;
+    protected CharacterStatus _status;
     
     //other components
-    private BaseAnimationController _animationController;
+    protected BaseAnimationController _animationController;
+    protected EffectManager effectManager;
     
    
     protected virtual void Start()
     {
         _status = GetComponent<CharacterStatus>();
         _animationController = GetComponent<BaseAnimationController>();
+        effectManager = GetComponent<EffectManager>();
     }
 
     public virtual bool DealDamage(int damage)
@@ -36,9 +38,10 @@ public class BaseHealthManager : MonoBehaviour
         {
             _animationController.TakeDamage();
         }
+        
+        effectManager.BloodEffect();
 
         return true;
-
     }
 
     public virtual void IncreaseHealth(int healthPoint)

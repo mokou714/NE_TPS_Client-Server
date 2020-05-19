@@ -27,8 +27,8 @@ public class PlayerShootManager : BaseShootManager
     protected override void Start()
     {
         base.Start();
-        _characterController = GetComponent<PlayerController>();
-        _animationController = GetComponent<PlayerAnimationController>();
+        characterController = GetComponent<PlayerController>();
+        animationController = GetComponent<PlayerAnimationController>();
         _arrowSkillManager = GetComponent<ArrowSkillManager>();
         currentAmmo = maxAmmo;
         currentAmmoUI.text = maxAmmo.ToString();
@@ -74,7 +74,7 @@ public class PlayerShootManager : BaseShootManager
         //not automatic reloading for players
         if (currentAmmo == 0) return;
         //check player controller status
-        if (((PlayerController) _characterController).isJumping) return;
+        if (((PlayerController) characterController).isJumping) return;
         //check arrow aiming state
         if (_arrowSkillManager.inAimingState) return;
 
@@ -123,6 +123,7 @@ public class PlayerShootManager : BaseShootManager
             _bulletPool[currentAmmo-1].Go(GetBulletDirection() * bulletSpeed, bulletLifetime);
             --currentAmmo;
             currentAmmoUI.text = currentAmmo.ToString();
+            effectManager.GunFire();
             yield return new WaitForSeconds(fireCDTime);
         }
 

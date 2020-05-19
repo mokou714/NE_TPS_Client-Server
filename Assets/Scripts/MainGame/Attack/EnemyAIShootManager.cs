@@ -8,7 +8,7 @@ public class EnemyAIShootManager : BaseShootManager
     protected override void Start()
     {
         base.Start();
-        _characterController = GetComponent<EnemyAIController>();
+        characterController = GetComponent<EnemyAIController>();
         _status = GetComponent<AIStatus>();
     }
 
@@ -22,13 +22,13 @@ public class EnemyAIShootManager : BaseShootManager
     public override Vector3 GetAimingDirection()
     {
         
-        var aiController = (EnemyAIController) _characterController;
+        var aiController = (EnemyAIController) characterController;
         return (aiController.EyeTransform.position - aiController.TargetPlayer.Center.position).normalized;
     }
 
     public override Vector3 GetBulletDirection()
     {
-        var aiController = (EnemyAIController) _characterController;
+        var aiController = (EnemyAIController) characterController;
         return (aiController.TargetPlayer.Center.position -bulletInitTransform.position).normalized;
     }
 

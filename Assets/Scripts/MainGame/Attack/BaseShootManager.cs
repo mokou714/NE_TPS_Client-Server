@@ -26,8 +26,9 @@ public abstract class BaseShootManager : MonoBehaviour
     protected Bullet[] _bulletPool;
     
     //other components
-    protected BaseCharacterController _characterController;
-    protected BaseAnimationController _animationController;
+    protected BaseCharacterController characterController;
+    protected BaseAnimationController animationController;
+    protected EffectManager effectManager;
     
     //status
     protected CharacterStatus _status;
@@ -36,8 +37,9 @@ public abstract class BaseShootManager : MonoBehaviour
     protected virtual void Start()
     {
         _status = GetComponent<CharacterStatus>();
-        _characterController = GetComponent<BaseCharacterController>();
-        _animationController = GetComponent<BaseAnimationController>();
+        characterController = GetComponent<BaseCharacterController>();
+        animationController = GetComponent<BaseAnimationController>();
+        effectManager = GetComponent<EffectManager>();
         InitBulletPool();
     }
 
@@ -72,12 +74,12 @@ public abstract class BaseShootManager : MonoBehaviour
         //check alive
         if(!_status.isAlive) return;
         //check base character state
-        if(_characterController.posture == BodyPosture.GUARD) return;
+        if(characterController.posture == BodyPosture.GUARD) return;
         //check shooting state
         if( _isShooting || _isReloading) return;
         
         _isShooting = true;
-        _animationController.Shoot(burstMode);
+        animationController.Shoot(burstMode);
         StartCoroutine(ShootBullet(burstMode ? 4 : 1));
     }
 
@@ -87,14 +89,14 @@ public abstract class BaseShootManager : MonoBehaviour
         if(!_status.isAlive) return;
         if (_isReloading || _isShooting || backUpAmmo == 0) return;
         _isReloading = true;
-        _animationController.Reload();
+        animationController.Reload();
     }
 
     protected virtual void SwitchMode()
     {
         //check alive
         if(!_status.isAlive) return;
-        if (_characterController.posture == BodyPosture.GUARD) return;
+        if (characterController.posture == BodyPosture.GUARD) return;
         burstMode = !burstMode;
     }
     protected virtual void InitBulletPool()
@@ -116,6 +118,7 @@ public abstract class BaseShootManager : MonoBehaviour
         {
             _bulletPool[currentAmmo-1].Go(GetBulletDirection() * bulletSpeed, bulletLifetime);
             --currentAmmo;
+            effectManager.GunFire();
             yield return new WaitForSeconds(fireCDTime);
         }
 

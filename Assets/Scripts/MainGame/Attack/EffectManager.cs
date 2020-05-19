@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 //only handle skill effect, not damage(by healthmanager)
-public class SkillEffectDealer : MonoBehaviour
+public class EffectManager : MonoBehaviour
 {
     private AIStatus _status;
     private EnemyAIController _aiController;
@@ -13,6 +13,7 @@ public class SkillEffectDealer : MonoBehaviour
     //particle effect
     [SerializeField] private GameObject dizzy;
     [SerializeField] private ParticleSystem blood;
+    [SerializeField] private ParticleSystem gunFire;
     
     private float _startTime;
 
@@ -38,6 +39,11 @@ public class SkillEffectDealer : MonoBehaviour
     public void BloodEffect()
     {
         blood.Play();
+    }
+
+    public void GunFire()
+    {
+        gunFire.Play();
     }
     
     //check stunning time every frame
