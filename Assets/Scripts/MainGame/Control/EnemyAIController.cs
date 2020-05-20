@@ -19,6 +19,7 @@ public class EnemyAIController : BaseCharacterController
 
     //components
     private NavMeshAgent _agent;
+    
 
     // Start is called before the first frame update
     protected override void Start()
@@ -31,12 +32,15 @@ public class EnemyAIController : BaseCharacterController
     // Update is called once per frame
     protected override void Update()
     {
-        DetectPlayer();
+        
         ChasePlayer();
         LoseTargetPlayer();
         StayingVigilant();
         UpdateBodyYAxisRotation();
         UpdateBodyXAxisRotation();
+        
+        //apply actions in next frame, if finding the player
+        DetectPlayer();
         
         _Debug();
         
@@ -73,13 +77,43 @@ public class EnemyAIController : BaseCharacterController
         {
             ((AIStatus)_status).aiState = AIState.ATTACK;
             _agent.isStopped = true;
-            _animationController.SetWalk(false, Direction.FORWARD);
+            _agent.velocity = Vector3.zero;
+            if(_status.isWalking)
+                _animationController.SetWalk(false, Direction.FORWARD);
+            else
+                _animationController.SetRun(false, Direction.FORWARD);
+            audioSource.Stop();
         }
         else
         {
             _agent.SetDestination(_targetPlayer.transform.position);
-            _animationController.SetWalk(true, Direction.FORWARD);
             _agent.isStopped = false;
+            
+            if (_status.isWalking)
+            {
+                _animationController.SetWalk(true, Direction.FORWARD);
+                _agent.speed = walkSpeed;
+            }
+            else
+            {
+                _animationController.SetRun(true, Direction.FORWARD);
+                _agent.speed = runSpeed;
+            }
+            
+            
+            var _clip =  _status.isWalking ? footstepWalk : footstepRun;
+            //walk <-> run
+            if (audioSource.clip != _clip)
+            {
+                audioSource.Stop();
+                audioSource.clip = _clip;
+                audioSource.Play();
+            }
+            //stop -> move
+            else if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
         }
     }
 
@@ -105,17 +139,23 @@ public class EnemyAIController : BaseCharacterController
 
         var distance = (_targetPlayer.Center.position - Center.position).magnitude;
         
-        //to detect state
-        if (distance > viewDistance)
+        //lose player -> Vigilant state
+        if (distance > viewDistance || !_targetPlayer.GetComponent<CharacterStatus>().isAlive)
         {
+            if(_status.isWalking)
+                _animationController.SetWalk(false, Direction.FORWARD);
+            else
+                _animationController.SetRun(false, Direction.FORWARD);
+
             ((AIStatus)_status).aiState = AIState.VIGILANT;
             _targetPlayer = null;
-            _animationController.SetWalk(false, Direction.FORWARD);
             _agent.isStopped = true;
+            _agent.velocity = Vector3.zero;
             vigilantStartTime = Time.time;
             Debug.Log("Lose Player");
+            audioSource.Stop();
         }
-        //to chase state
+        //play out of attack range -> chase state
         else if(distance > attackDistance)
         {
             ((AIStatus)_status).aiState = AIState.CHASE;
@@ -133,6 +173,8 @@ public class EnemyAIController : BaseCharacterController
     {
         foreach (var player in players)
         {
+            if (!player.GetComponent<CharacterStatus>().isAlive) continue; //player dead, go next
+            
             //check view distance(use center position)
             var distance = (player.Center.position - Center.position).magnitude;
             if (distance > viewDistance) continue;

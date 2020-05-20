@@ -116,8 +116,6 @@ public abstract class BaseArrow : MonoBehaviour
     protected virtual void UpdateDirection()
     {
         if(isAiming || !isOnAir) return;
-        
-        Debug.Log("update direction");
         transform.rotation = Quaternion.LookRotation(_rigidbody.velocity.normalized);
 
     }

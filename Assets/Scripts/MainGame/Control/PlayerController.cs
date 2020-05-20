@@ -98,12 +98,27 @@ public class PlayerController : BaseCharacterController
         if (movingDir != Vector3.zero)
         {
             isMoving = true;
-            float speed = isWalking ? walkSpeed : runSpeed;
+            var speed = isWalking ? walkSpeed : runSpeed;
             transform.Translate(Time.deltaTime * speed * movingDir);
+            var _clip = isWalking ? footstepWalk : footstepRun;
+            //walk <-> run
+            if (audioSource.clip != _clip)
+            {
+                audioSource.Stop();
+                audioSource.clip = _clip;
+                audioSource.Play();
+            }
+            //stop -> move
+            else if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+
         }
         else
         {
             isMoving = false;
+            audioSource.Stop();
         }
 
     }

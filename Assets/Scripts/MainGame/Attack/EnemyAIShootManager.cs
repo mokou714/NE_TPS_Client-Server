@@ -35,12 +35,14 @@ public class EnemyAIShootManager : BaseShootManager
     protected override void Shoot()
     {
         if (!_status.isAlive) return;
+        
         //automatic reloading
         if (currentAmmo == 0)
         {
             Reload();
             return;
         }
+        
         if( ((AIStatus)_status).aiState == AIState.ATTACK)
             base.Shoot();
         

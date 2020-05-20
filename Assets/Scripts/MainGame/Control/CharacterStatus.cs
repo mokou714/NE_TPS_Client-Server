@@ -5,5 +5,6 @@ using UnityEngine;
 public class CharacterStatus : MonoBehaviour
 {
    public bool isAlive;
+   public bool isWalking;
    public bool isStunned;
 }

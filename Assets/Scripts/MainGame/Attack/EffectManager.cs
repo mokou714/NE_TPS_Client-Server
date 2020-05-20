@@ -9,12 +9,12 @@ public class EffectManager : MonoBehaviour
 {
     private AIStatus _status;
     private EnemyAIController _aiController;
-    
+
     //particle effect
     [SerializeField] private GameObject dizzy;
     [SerializeField] private ParticleSystem blood;
     [SerializeField] private ParticleSystem gunFire;
-    
+
     private float _startTime;
 
     private void Start()
@@ -23,20 +23,26 @@ public class EffectManager : MonoBehaviour
         _aiController = GetComponent<EnemyAIController>();
     }
 
-    public void Stun(bool stunned, float stunningTime)
+    public void Stun(float stunningTime)
     {
-        _status.isStunned = stunned;
-        if (stunned)
+        if (!_status.isStunned)
         {
-            _startTime = Time.time;
+            _status.isStunned = true;
+            _startTime = Time.time; 
             _status.aiState = AIState.DETECT;
             _aiController.StopMoving();
             dizzy.SetActive(true);
-            StartCoroutine(StunningTimeChecking(stunningTime));
+            StartCoroutine(StunningTimeChecking(stunningTime)); 
         }
-    }
+        //if already stunned, extend stunning time
+        else {
+            _startTime = Time.time; 
+        }
+}
 
-    public void BloodEffect()
+
+
+public void BloodEffect()
     {
         blood.Play();
     }

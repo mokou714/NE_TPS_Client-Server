@@ -7,12 +7,11 @@ public class StunningArrow : BaseArrow
 {
     public float stunningRange;
     public int stunningTime;
-
-    private List<EffectManager> stunnedCharacters = new List<EffectManager>();
+    
     
     protected override void OnTriggerEnter(Collider other)
     {
-        //for now: only play can shoot arrows
+        //for now: only player can shoot arrows
         if (other.gameObject.CompareTag("Enemy"))
         {
             InitStunningEffect(other.gameObject);
@@ -26,9 +25,7 @@ public class StunningArrow : BaseArrow
         //deal damage to this enemy
         if (enemy.gameObject.GetComponent<EnemyHealthManager>().DealDamage(damage))
         {
-            var skd = enemy.gameObject.GetComponent<EffectManager>();
-            skd.Stun(true, stunningTime);
-            stunnedCharacters.Add(skd);
+            enemy.gameObject.GetComponent<EffectManager>().Stun(stunningTime);
             damageMessageManager.ShowMessage(damage, enemy.gameObject.GetComponent<EnemyAIController>().Center.transform.position);
         }
         
@@ -36,14 +33,14 @@ public class StunningArrow : BaseArrow
         var others = Physics.OverlapSphere(enemy.GetComponent<EnemyAIController>().Center.transform.position, stunningRange);
         foreach (var e in others)
         {
+            if(e.gameObject == enemy) continue; //not deal damage to arrow-receiving enemy again 
+            
             //if can deal damage, then apply effect
             if (e.gameObject.CompareTag("Enemy") &&
                 e.gameObject.GetComponent<EnemyHealthManager>().DealDamage(damage))
             {
-                var skd = e.gameObject.GetComponent<EffectManager>();
-                skd.Stun(true, stunningTime);
+                e.gameObject.GetComponent<EffectManager>().Stun(stunningTime);
                 damageMessageManager.ShowMessage(damage, e.gameObject.GetComponent<EnemyAIController>().Center.transform.position);
-                stunnedCharacters.Add(skd);
             }
         }
     }

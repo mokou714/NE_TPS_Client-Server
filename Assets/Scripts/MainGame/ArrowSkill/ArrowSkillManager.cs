@@ -38,7 +38,10 @@ public class ArrowSkillManager : MonoBehaviour
     private PlayerController _playerController;
     [SerializeField] private TPSCameraController _cameraController;
     [SerializeField] private ArrowIconUI _arrowIconUi;
-
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip pullArrow;
+    [SerializeField] private AudioClip releaseArrow;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -89,6 +92,7 @@ public class ArrowSkillManager : MonoBehaviour
             if (_currentArrow is null) return;
             _isDrawing = true;
             _currentArrow.ShakingRadious *= 2;
+            audioSource.PlayOneShot(pullArrow);
         }
 
 
@@ -111,6 +115,7 @@ public class ArrowSkillManager : MonoBehaviour
                 arrowOrigin.localPosition = _defaultArrowOriginPosition;
                 arrowOrigin.localRotation = _defaultArrowOriginRotation;
                 _currentArrow = null;
+                audioSource.PlayOneShot(releaseArrow);
             }
             //still drawing
             else
@@ -227,6 +232,12 @@ public class ArrowSkillManager : MonoBehaviour
 
         if (!(_currentArrow is null))
             _currentArrow.gameObject.SetActive(true);
+    }
+
+    public void ObtainArrows(int count)
+    {
+        arrowCount += count;
+        arrowCountUI.text = arrowCount.ToString();
     }
 
 }

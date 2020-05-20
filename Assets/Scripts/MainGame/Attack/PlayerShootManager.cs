@@ -24,6 +24,7 @@ public class PlayerShootManager : BaseShootManager
     private ArrowSkillManager _arrowSkillManager;
     
     
+    
     protected override void Start()
     {
         base.Start();
@@ -124,10 +125,17 @@ public class PlayerShootManager : BaseShootManager
             --currentAmmo;
             currentAmmoUI.text = currentAmmo.ToString();
             effectManager.GunFire();
+            audioSource.PlayOneShot(shootSFX);
             yield return new WaitForSeconds(fireCDTime);
         }
 
         _isShooting = false;
+    }
+
+    public void ObtainAmmo(int ammo)
+    {
+        backUpAmmo += ammo;
+        backupAmmoUI.text = backUpAmmo.ToString();
     }
 
     

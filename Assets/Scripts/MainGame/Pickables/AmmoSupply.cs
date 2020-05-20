@@ -6,22 +6,18 @@ using UnityEngine.UI;
 public class AmmoSupply : Pickable
 {
     public int ammo;
-    [SerializeField] private Text backupAmmoUI;
-    
+
     protected override void PickUp(GameObject player)
-    {
-        var shootManager = player.GetComponent<PlayerShootManager>();
-        shootManager.backUpAmmo += ammo;
-        backupAmmoUI.text = shootManager.backUpAmmo.ToString();
-        
+    { 
+        base.PickUp(player);
+        player.GetComponent<PlayerShootManager>().ObtainAmmo(ammo);
     }
 
     protected override void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            PickUp(other.gameObject);
-            Destroy(gameObject);
+            base.OnTriggerEnter(other);
         }
     }
 

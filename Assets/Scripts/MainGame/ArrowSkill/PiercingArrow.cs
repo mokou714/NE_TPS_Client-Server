@@ -4,7 +4,7 @@ public class PiercingArrow : BaseArrow
 {
    protected override void OnTriggerEnter(Collider other)
    {
-      //for now: only play can shoot arrows
+      //for now: only player can shoot arrows
       if (other.gameObject.CompareTag("Enemy"))
       {
          if(other.GetComponent<EnemyHealthManager>().DealDamage(damage))

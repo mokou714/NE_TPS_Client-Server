@@ -29,7 +29,9 @@ public abstract class BaseShootManager : MonoBehaviour
     protected BaseCharacterController characterController;
     protected BaseAnimationController animationController;
     protected EffectManager effectManager;
-    
+    [SerializeField] protected AudioSource audioSource;
+    [SerializeField] protected AudioClip shootSFX;
+    [SerializeField] protected AudioClip reloadSFX;
     //status
     protected CharacterStatus _status;
 
@@ -89,6 +91,7 @@ public abstract class BaseShootManager : MonoBehaviour
         if(!_status.isAlive) return;
         if (_isReloading || _isShooting || backUpAmmo == 0) return;
         _isReloading = true;
+        audioSource.PlayOneShot(reloadSFX);
         animationController.Reload();
     }
 
@@ -119,6 +122,7 @@ public abstract class BaseShootManager : MonoBehaviour
             _bulletPool[currentAmmo-1].Go(GetBulletDirection() * bulletSpeed, bulletLifetime);
             --currentAmmo;
             effectManager.GunFire();
+            audioSource.PlayOneShot(shootSFX);
             yield return new WaitForSeconds(fireCDTime);
         }
 

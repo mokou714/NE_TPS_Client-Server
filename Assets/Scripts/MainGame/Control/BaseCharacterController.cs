@@ -25,7 +25,10 @@ public abstract class BaseCharacterController : MonoBehaviour
     protected BaseAnimationController _animationController;
     protected BaseShootManager _shootManager;
     protected Rigidbody _rigidbody;
-
+    [SerializeField] protected AudioSource audioSource;
+    [SerializeField] protected AudioClip footstepWalk;
+    [SerializeField] protected AudioClip footstepRun;
+    
     // Start is called before the first frame update
     protected virtual void Start()
     {

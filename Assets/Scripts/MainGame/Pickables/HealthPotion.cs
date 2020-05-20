@@ -9,6 +9,7 @@ public class HealthPotion : Pickable
     
     protected override void PickUp(GameObject player)
     {
+        base.PickUp(player);
         player.GetComponent<PlayerHealthManager>().IncreaseHealth(HealthPoint);
         
     }
@@ -17,8 +18,7 @@ public class HealthPotion : Pickable
     {
         if (other.CompareTag("Player"))
         {
-            PickUp(other.gameObject);
-            Destroy(gameObject);
+            base.OnTriggerEnter(other);
         }
     }
 }
