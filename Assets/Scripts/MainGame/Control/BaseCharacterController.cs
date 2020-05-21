@@ -36,7 +36,7 @@ public abstract class BaseCharacterController : MonoBehaviour
         _shootManager = GetComponent<BaseShootManager>();
         _rigidbody = GetComponent<Rigidbody>();
         _status = GetComponent<CharacterStatus>();
-        facingDir =  body.transform.rotation * Vector3.forward;
+        facingDir =  transform.rotation * Vector3.forward;
     }
 
     // Update is called once per frame

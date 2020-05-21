@@ -36,6 +36,7 @@ public class ArrowSkillManager : MonoBehaviour
     
     //other component
     private PlayerController _playerController;
+    private CharacterStatus _status;
     [SerializeField] private TPSCameraController _cameraController;
     [SerializeField] private ArrowIconUI _arrowIconUi;
     [SerializeField] private AudioSource audioSource;
@@ -48,6 +49,7 @@ public class ArrowSkillManager : MonoBehaviour
         _defaultArrowOriginPosition = arrowOrigin.localPosition;
         _defaultArrowOriginRotation = arrowOrigin.localRotation;
         _playerController = GetComponent<PlayerController>();
+        _status = GetComponent<CharacterStatus>();
         _screenCenter = new Vector3(Screen.width/2f,Screen.height/2f,0f);
         _currentForce = minShootForce;
         arrowCountUI.text = arrowCount.ToString();
@@ -85,6 +87,7 @@ public class ArrowSkillManager : MonoBehaviour
     {
         if (arrowCount <= 0) return;
         if (!inAimingState) return;
+        if (!_status.isAlive) return;
         if(_playerController.posture == BodyPosture.GUARD) return;
 
         if (Input.GetMouseButtonDown(0))
@@ -171,6 +174,8 @@ public class ArrowSkillManager : MonoBehaviour
 
     private void ChangeAimingState()
     {
+        if (!_status.isAlive) return;
+        
         if (Input.GetMouseButtonDown(1))
         {
             //turn on/off skill when not in GUARD state

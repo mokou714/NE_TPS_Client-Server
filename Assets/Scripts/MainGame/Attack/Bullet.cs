@@ -81,6 +81,7 @@ public class Bullet : MonoBehaviour
                 Reset(); 
                 break; 
             default:
+                Reset(); 
                 return;
         }
     }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BaseHealthManager : MonoBehaviour
+public abstract class BaseHealthManager : MonoBehaviour
 {
     public int health;
     [SerializeField] protected int maxHealth;
@@ -18,6 +18,7 @@ public class BaseHealthManager : MonoBehaviour
     [SerializeField] protected AudioSource audioSource;
     [SerializeField] protected AudioClip gettingHit;
     [SerializeField] protected AudioClip dying;
+    protected GameStateManager gameStateManager;
     
     protected virtual void Start()
     {
@@ -60,21 +61,26 @@ public class BaseHealthManager : MonoBehaviour
             health = maxHealth;
         
     }
-    
-    
+
+    public void SetGSM(GameStateManager gsm)
+    {
+        gameStateManager = gsm;
+    }
+
+    protected abstract void OnBodyDisappear();
 
     protected virtual void CharacterDied()
     {
         _status.isAlive = false;
        _animationController.Die();
        StartCoroutine(DelayBodyDisappear());
-       Debug.Log("Enemy died");
+       Debug.Log("Character died");
     }
     
-    private IEnumerator DelayBodyDisappear()
+    protected virtual IEnumerator DelayBodyDisappear()
     {
         yield return new WaitForSeconds(bodyDisappearingDelay);
-        Destroy(gameObject);
+        OnBodyDisappear();
     }
 
   

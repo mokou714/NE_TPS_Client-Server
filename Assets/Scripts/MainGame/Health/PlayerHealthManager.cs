@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 
@@ -12,7 +13,6 @@ public class PlayerHealthManager : BaseHealthManager{
     private float _maxHealthBarWidth;
     private float _newHealthBarWidth;
     private bool _isChangingHealth;
-    
     
 
 
@@ -54,6 +54,13 @@ public class PlayerHealthManager : BaseHealthManager{
         base.IncreaseHealth(healthPoint);
         InitHealthBarAnim(-healthPoint);
     }
+
+    protected override void OnBodyDisappear()
+    {
+        //not deactivate player
+        gameStateManager.OnPlayerDies();
+    }
+
 
     private void InitHealthBarAnim(int deltaHealth)
     {

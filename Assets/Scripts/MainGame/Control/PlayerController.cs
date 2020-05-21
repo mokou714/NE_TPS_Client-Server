@@ -99,7 +99,10 @@ public class PlayerController : BaseCharacterController
         {
             isMoving = true;
             var speed = isWalking ? walkSpeed : runSpeed;
-            transform.Translate(Time.deltaTime * speed * movingDir);
+            transform.Translate(Time.deltaTime * speed * movingDir, Space.World);
+
+            //play footstep audio
+            if(isJumping) return;
             var _clip = isWalking ? footstepWalk : footstepRun;
             //walk <-> run
             if (audioSource.clip != _clip)
@@ -113,7 +116,6 @@ public class PlayerController : BaseCharacterController
             {
                 audioSource.Play();
             }
-
         }
         else
         {
@@ -132,6 +134,7 @@ public class PlayerController : BaseCharacterController
             _rigidbody.AddForce(jumpForce*50*Vector3.up);
             ((PlayerAnimationController)_animationController).SetJump(true);
             isJumping = true;
+            audioSource.Stop();
         }
     }
     
@@ -248,7 +251,7 @@ public class PlayerController : BaseCharacterController
     
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Terrain") )
+        if (other.gameObject.CompareTag("Terrain") && isJumping)
         {
             isJumping = false;
             ((PlayerAnimationController)_animationController).SetJump(false);

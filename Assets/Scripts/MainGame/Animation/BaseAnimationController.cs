@@ -134,7 +134,11 @@ public class BaseAnimationController : MonoBehaviour
         }
     }
 
-    
+    public void Reset()
+    {
+        _animator.SetTrigger("reset");
+    }
+
 
     public void SwitchCrouchState()
     {

@@ -173,7 +173,9 @@ public class EnemyAIController : BaseCharacterController
     {
         foreach (var player in players)
         {
-            if (!player.GetComponent<CharacterStatus>().isAlive) continue; //player dead, go next
+            if (!player.GetComponent<CharacterStatus>().isAlive){
+                continue; //player dead, go next
+            }
             
             //check view distance(use center position)
             var distance = (player.Center.position - Center.position).magnitude;

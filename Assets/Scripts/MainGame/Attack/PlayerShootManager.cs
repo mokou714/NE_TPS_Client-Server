@@ -139,6 +139,8 @@ public class PlayerShootManager : BaseShootManager
     }
 
     
+
+
     //debug
     private void _Debug()
     {

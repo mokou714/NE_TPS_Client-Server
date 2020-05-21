@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class SettingManager : MonoBehaviour
 {
     [SerializeField] private GameObject menuUI;
+    [SerializeField] private GameStateManager gameStateManager;
     private bool _isDisplaying;
     
     // Start is called before the first frame update
@@ -17,7 +18,7 @@ public class SettingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && gameStateManager.IsGameRunning())
             Display();
     }
 
