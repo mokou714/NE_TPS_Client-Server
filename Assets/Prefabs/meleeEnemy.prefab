@@ -30506,7 +30506,8 @@ MonoBehaviour:
   maxHealth: 100
   bodyDisappearingDelay: 4
   droppingDelay: 3
-  audioSource: {fileID: 0}
+  healthAudioSource: {fileID: 4032746914152128705}
+  movementAudioSource: {fileID: 4032746913376483978}
   gettingHit: {fileID: 8300000, guid: 47924a6f369985c4e908e3183d38e52a, type: 3}
   dying: {fileID: 8300000, guid: 6846dbe5b4691e849ab5a0dfbf7bd947, type: 3}
   enemyHealthBar: {fileID: 4032746913802313022}

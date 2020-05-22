@@ -130,13 +130,8 @@ public class BaseAnimationController : MonoBehaviour
         //no running for crouch
         else if(_characterController.posture == BodyPosture.CROUCH && isRunning)
         {
-            SetWalk(true,direction);
+            SetWalk(true, direction); //not override setWalk when running is false
         }
-    }
-
-    public void Reset()
-    {
-        _animator.SetTrigger("reset");
     }
 
 

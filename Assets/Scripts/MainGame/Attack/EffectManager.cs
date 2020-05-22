@@ -30,19 +30,20 @@ public class EffectManager : MonoBehaviour
             _status.isStunned = true;
             _startTime = Time.time; 
             _status.aiState = AIState.DETECT;
+            _aiController.LosePlayer();
             _aiController.StopMoving();
+            _aiController.SwitchBodyPosture(false); //change posture after stop walking/running animation!!!
             dizzy.SetActive(true);
             StartCoroutine(StunningTimeChecking(stunningTime)); 
         }
         //if already stunned, extend stunning time
         else {
             _startTime = Time.time; 
-        }
-}
+        } 
+    }
 
 
-
-public void BloodEffect()
+    public void BloodEffect()
     {
         blood.Play();
     }

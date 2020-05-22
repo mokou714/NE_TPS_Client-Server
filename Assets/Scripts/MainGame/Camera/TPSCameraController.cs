@@ -21,8 +21,7 @@ public class TPSCameraController : MonoBehaviour
     
     //helper data
     private Vector3 _lastMousePos;
-    private Vector3 _lastVerticalDirection;
-    private Vector3 _lastHorizontalDirection;
+    private Vector3 _defaultMousePos;
     private bool _isAiming;
     private bool _isSwitchingAiming;
     
@@ -33,8 +32,9 @@ public class TPSCameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Screen.lockCursor = true;
         _lastMousePos = Input.mousePosition;
-        _lastHorizontalDirection = _lastVerticalDirection = Vector3.forward;
+        _defaultMousePos = new Vector3(Screen.width/2f, Screen.height/2f,0f);
         pivot = transform.parent;
         _defaultLocalPosition = transform.localPosition;
         _camera = GetComponent<Camera>();
@@ -66,23 +66,30 @@ public class TPSCameraController : MonoBehaviour
         if (_isSwitchingAiming) return;
         
         //rotate pivot along world Y axis
-        int rX = revertX ? -1 : 1;
-        int rY = revertY ? -1 : 1;
-        Vector3 currentMousePos = Input.mousePosition;
-        float deltaX = currentMousePos.x - _lastMousePos.x;
-        float deltaY = currentMousePos.y - _lastMousePos.y;
-        pivot.Rotate(Vector3.up, Time.deltaTime*sensitivity*deltaX*rX,Space.World);
-        //rotate self along local X axis
-        transform.Rotate(Vector3.right, -Time.deltaTime*sensitivity*deltaY*rY,Space.Self); 
-    
+        var rX = revertX ? -1 : 1;
+        var rY = revertY ? -1 : 1;
+        var currentMousePos = Input.mousePosition;
+        // var deltaX = currentMousePos.x - _lastMousePos.x;
+        // var deltaY = currentMousePos.y - _lastMousePos.y;
+        var deltaX = Input.GetAxis("Mouse X");
+        var deltaY = Input.GetAxis("Mouse Y");
+        
+
+        pivot.rotation *= Quaternion.AngleAxis(Time.deltaTime*sensitivity*deltaX*rX * 50f, Vector3.up);
+        //pivot.Rotate(Vector3.up, Time.deltaTime*sensitivity*deltaX*rX,Space.World);
+        transform.localRotation *= Quaternion.AngleAxis(Time.deltaTime*sensitivity*deltaY*rY * 50f, Vector3.left);
+        //transform.Rotate(Vector3.right, -Time.deltaTime*sensitivity*deltaY*rY,Space.Self);
+
         _lastMousePos = currentMousePos;
+        //_lastMousePos.x = deltaX;
+        //_lastMousePos.y = deltaY;
     
         //clamp to angle range
-        Vector3 newRotation = new Vector3(transform.rotation.eulerAngles.x,0,0);
+        var newRotation = new Vector3(transform.rotation.eulerAngles.x,0,0);
         if (newRotation.x < VerticalAngleRange.x+360 && newRotation.x > VerticalAngleRange.y)
         {
-            float toMax = newRotation.x - VerticalAngleRange.y;
-            float toMin = VerticalAngleRange.x + 360 - newRotation.x;
+            var toMax = newRotation.x - VerticalAngleRange.y;
+            var toMin = VerticalAngleRange.x + 360 - newRotation.x;
             newRotation.x = toMax < toMin ? VerticalAngleRange.y : VerticalAngleRange.x;
         }
         transform.localRotation = Quaternion.Euler(newRotation);

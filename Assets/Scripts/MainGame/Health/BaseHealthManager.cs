@@ -15,11 +15,11 @@ public abstract class BaseHealthManager : MonoBehaviour
     //other components
     protected BaseAnimationController _animationController;
     protected EffectManager effectManager;
-    [SerializeField] protected AudioSource audioSource;
+    [SerializeField] protected AudioSource healthAudioSource;
+    [SerializeField] protected AudioSource movementAudioSource;
     [SerializeField] protected AudioClip gettingHit;
     [SerializeField] protected AudioClip dying;
     protected GameStateManager gameStateManager;
-    
     protected virtual void Start()
     {
         _status = GetComponent<CharacterStatus>();
@@ -37,17 +37,17 @@ public abstract class BaseHealthManager : MonoBehaviour
         if (health <= 0)
         {
             health = 0;
-            audioSource.clip = dying;
+            healthAudioSource.clip = dying;
             CharacterDied();
         }
         else
         {
-            audioSource.clip = gettingHit;
+            healthAudioSource.clip = gettingHit;
             _animationController.TakeDamage();
         }
         
         effectManager.BloodEffect();
-        audioSource.Play();
+        healthAudioSource.Play();
 
         return true;
     }
@@ -73,6 +73,7 @@ public abstract class BaseHealthManager : MonoBehaviour
     {
         _status.isAlive = false;
        _animationController.Die();
+       movementAudioSource.Stop();
        StartCoroutine(DelayBodyDisappear());
        Debug.Log("Character died");
     }

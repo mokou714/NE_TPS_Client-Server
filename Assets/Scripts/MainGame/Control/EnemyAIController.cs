@@ -34,7 +34,7 @@ public class EnemyAIController : BaseCharacterController
     {
         
         ChasePlayer();
-        LoseTargetPlayer();
+        DetectLosingTargetPlayer();
         StayingVigilant();
         UpdateBodyYAxisRotation();
         UpdateBodyXAxisRotation();
@@ -58,8 +58,7 @@ public class EnemyAIController : BaseCharacterController
 
         if (FindPlayer())
         {
-            if( ((AIStatus)_status).aiState == AIState.DETECT)
-                SwitchBodyPosture();
+            SwitchBodyPosture(true);
             ((AIStatus)_status).aiState = AIState.CHASE;
             Debug.Log("Found Player");
         }
@@ -76,44 +75,11 @@ public class EnemyAIController : BaseCharacterController
         if (distance < attackDistance)
         {
             ((AIStatus)_status).aiState = AIState.ATTACK;
-            _agent.isStopped = true;
-            _agent.velocity = Vector3.zero;
-            if(_status.isWalking)
-                _animationController.SetWalk(false, Direction.FORWARD);
-            else
-                _animationController.SetRun(false, Direction.FORWARD);
-            audioSource.Stop();
+            StopMoving();
         }
         else
         {
-            _agent.SetDestination(_targetPlayer.transform.position);
-            _agent.isStopped = false;
-            
-            if (_status.isWalking)
-            {
-                _animationController.SetWalk(true, Direction.FORWARD);
-                _agent.speed = walkSpeed;
-            }
-            else
-            {
-                _animationController.SetRun(true, Direction.FORWARD);
-                _agent.speed = runSpeed;
-            }
-            
-            
-            var _clip =  _status.isWalking ? footstepWalk : footstepRun;
-            //walk <-> run
-            if (audioSource.clip != _clip)
-            {
-                audioSource.Stop();
-                audioSource.clip = _clip;
-                audioSource.Play();
-            }
-            //stop -> move
-            else if (!audioSource.isPlaying)
-            {
-                audioSource.Play();
-            }
+            StartMoving();
         }
     }
 
@@ -124,13 +90,13 @@ public class EnemyAIController : BaseCharacterController
         if (Time.time - vigilantStartTime > vigilantTime)
         {
             ((AIStatus)_status).aiState = AIState.DETECT;
-            SwitchBodyPosture();
+            SwitchBodyPosture(false);
         }
         
         //to add some behaviours in vigilant state
     }
 
-    private void LoseTargetPlayer()
+    private void DetectLosingTargetPlayer()
     {
         if (!_status.isAlive || _status.isStunned) return;
         if (((AIStatus)_status).aiState == AIState.DETECT || ((AIStatus)_status).aiState == AIState.VIGILANT) return;
@@ -142,18 +108,12 @@ public class EnemyAIController : BaseCharacterController
         //lose player -> Vigilant state
         if (distance > viewDistance || !_targetPlayer.GetComponent<CharacterStatus>().isAlive)
         {
-            if(_status.isWalking)
-                _animationController.SetWalk(false, Direction.FORWARD);
-            else
-                _animationController.SetRun(false, Direction.FORWARD);
-
             ((AIStatus)_status).aiState = AIState.VIGILANT;
-            _targetPlayer = null;
-            _agent.isStopped = true;
-            _agent.velocity = Vector3.zero;
             vigilantStartTime = Time.time;
+            LosePlayer();
+            StopMoving();
             Debug.Log("Lose Player");
-            audioSource.Stop();
+            
         }
         //play out of attack range -> chase state
         else if(distance > attackDistance)
@@ -162,13 +122,7 @@ public class EnemyAIController : BaseCharacterController
         }
     }
 
-    //internal helpers
-    private void SwitchBodyPosture()
-    {
-        posture = posture == BodyPosture.COMBAT ? BodyPosture.GUARD : BodyPosture.COMBAT;
-        _animationController.SwitchCombatState();
-    }
-
+    //helpers
     private bool FindPlayer()
     {
         foreach (var player in players)
@@ -231,17 +185,65 @@ public class EnemyAIController : BaseCharacterController
     {
         //throw new System.NotImplementedException();
     }
+    
+    public void SwitchBodyPosture(bool toCombat)
+    {
+        //not switch if same states
+        if ( (posture == BodyPosture.COMBAT) ==  toCombat) return;
+        posture = posture == BodyPosture.COMBAT ? BodyPosture.GUARD : BodyPosture.COMBAT;
+        _animationController.SwitchCombatState();
+    }
+
+    public void StartMoving()
+    {
+        //update destination
+        _agent.SetDestination(_targetPlayer.transform.position);
+
+        _agent.isStopped = false;
+            
+        if (_status.isWalking)
+        {
+            _animationController.SetWalk(true, Direction.FORWARD);
+            _agent.speed = walkSpeed;
+        }
+        else
+        {
+            _animationController.SetRun(true, Direction.FORWARD);
+            _agent.speed = runSpeed;
+        }
+            
+            
+        var _clip =  _status.isWalking ? footstepWalk : footstepRun;
+        //walk <-> run
+        if (audioSource.clip != _clip)
+        {
+            audioSource.Stop();
+            audioSource.clip = _clip;
+            audioSource.Play();
+        }
+        //stop -> move
+        else if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+    }
 
     public void StopMoving()
-    {
-        //enemy can only walk
-        _animationController.SetWalk(false, Direction.FORWARD);
-        if(posture != BodyPosture.GUARD)
-            SwitchBodyPosture();
-        ((AIStatus)_status).aiState = AIState.DETECT;
-        _targetPlayer = null;
-        
+    { 
+        //simply stop moving, not changing other attributes
+        if(_status.isWalking)
+            _animationController.SetWalk(false, Direction.FORWARD);
+        else
+            _animationController.SetRun(false, Direction.FORWARD);
+        Debug.Log("Enemy stopped");
         _agent.isStopped = true;
+        _agent.velocity = Vector3.zero;
+        audioSource.Stop();
+    }
+
+    public void LosePlayer()
+    {
+        _targetPlayer = null;
     }
     
     public Transform EyeTransform => eyeTransform;

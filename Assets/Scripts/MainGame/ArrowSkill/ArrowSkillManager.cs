@@ -212,6 +212,8 @@ public class ArrowSkillManager : MonoBehaviour
 
     private void DisplayArrow()
     {
+        if (_currentArrow is null) return;
+        
         _currentArrow.isAiming = inAimingState;
         if(inAimingState)
             _currentArrow.gameObject.SetActive(true);
