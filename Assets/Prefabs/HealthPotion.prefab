@@ -33352,4 +33352,4 @@ MonoBehaviour:
   translateAmplitude: 3
   model: {fileID: 1195884948884078030}
   pickupSFX: {fileID: 8300000, guid: 32fbabdd7cc35fb4b80e270bffc4018d, type: 3}
-  HealthPoint: 25
+  HealthPoint: 30

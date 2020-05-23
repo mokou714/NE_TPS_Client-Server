@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
+
 
 public class PlayerShootManager : BaseShootManager
 {
@@ -37,7 +36,6 @@ public class PlayerShootManager : BaseShootManager
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
         _screenCenter = new Vector3(Screen.width/2f,Screen.height/2f,0f);
-        InitBulletPool();
     }
 
 
@@ -75,7 +73,7 @@ public class PlayerShootManager : BaseShootManager
         //not automatic reloading for players
         if (currentAmmo == 0) return;
         //check player controller status
-        if (((PlayerController) characterController).isJumping) return;
+        //if (((PlayerController) characterController).isJumping) return;
         //check arrow aiming state
         if (_arrowSkillManager.inAimingState) return;
 
@@ -109,7 +107,7 @@ public class PlayerShootManager : BaseShootManager
         {
             var obj = Instantiate(bulletPrefab, null);
             _bulletPool[i] = obj.GetComponent<Bullet>();
-            _bulletPool[i].Initialize(bulletDamage, bulletInitTransform,damageMessageManager);
+            _bulletPool[i].Initialize(UnityEngine.Random.Range(bulletMinDamage,bulletMaxDamage+1), bulletInitTransform,damageMessageManager);
         }
     }
 
@@ -126,7 +124,8 @@ public class PlayerShootManager : BaseShootManager
             currentAmmoUI.text = currentAmmo.ToString();
             effectManager.GunFire();
             audioSource.PlayOneShot(shootSFX);
-            yield return new WaitForSeconds(fireCDTime);
+            animationController.Shoot(burstMode);
+            yield return new WaitForSeconds(burstMode? burstFireCD:fireCD);
         }
 
         _isShooting = false;

@@ -87,6 +87,7 @@
      <Compile Include="Assets\Scripts\MainGame\Pickables\ArrowSupply.cs" />
      <Compile Include="Assets\Scripts\MainGame\Pickables\HealthPotion.cs" />
      <Compile Include="Assets\Scripts\MainGame\Pickables\Pickable.cs" />
+     <Compile Include="Assets\Scripts\MainGame\Sound\BGMPlayer.cs" />
      <Compile Include="Assets\Scripts\MainGame\UI\ArrowIconUI.cs" />
      <Compile Include="Assets\Scripts\MainGame\UI\Billboard.cs" />
      <Compile Include="Assets\Scripts\MainGame\UI\BulletIconAnim.cs" />
@@ -98,7 +99,9 @@
      <Compile Include="Assets\Scripts\StartScene\CanvasBackButton.cs" />
      <Compile Include="Assets\Scripts\StartScene\ClickableText\ClickableText.cs" />
      <Compile Include="Assets\Scripts\StartScene\ClickableText\Continue.cs" />
+     <Compile Include="Assets\Scripts\StartScene\ClickableText\Credit.cs" />
      <Compile Include="Assets\Scripts\StartScene\ClickableText\Login.cs" />
+     <Compile Include="Assets\Scripts\StartScene\ClickableText\NewGame.cs" />
      <Compile Include="Assets\Scripts\StartScene\ClickableText\Quit.cs" />
      <Compile Include="Assets\Scripts\StartScene\ClickableText\SignUp.cs" />
      <Compile Include="Assets\Scripts\StartScene\ClickableText\Start.cs" />
@@ -111,6 +114,7 @@
      <Compile Include="Assets\Scripts\StartScene\NetworkDataRequest\NetworkDataRequest.cs" />
      <Compile Include="Assets\Scripts\StartScene\NetworkDataRequest\SignUpManager.cs" />
      <Compile Include="Assets\Scripts\StartScene\NetworkManager.cs" />
+     <Compile Include="Assets\Scripts\StartScene\NewGameWindow.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>H:/UnityProjects/NE_TPS_Client&amp;Server/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>

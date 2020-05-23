@@ -38,6 +38,7 @@ public class TPSCameraController : MonoBehaviour
         pivot = transform.parent;
         _defaultLocalPosition = transform.localPosition;
         _camera = GetComponent<Camera>();
+        BGMPlayer.Instance.transform.parent = transform;
     }
 
     // Update is called once per frame

@@ -18,7 +18,6 @@ public abstract class BaseArrow : MonoBehaviour
     
     //components
     private Rigidbody _rigidbody;
-    [SerializeField] private MeshRenderer arrowMesh;
     [SerializeField] private TrailRenderer trail;
     
     //helper data

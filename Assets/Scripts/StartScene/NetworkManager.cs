@@ -10,12 +10,14 @@ using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviour
 {
+    //singleton
+
     //components
-    public TcpClient tcpClient;
-    public StreamReader streamReader;
-    public StreamWriter streamWriter;
-    public NetworkStream networkStream;
-    public bool socketReady;
+    private TcpClient tcpClient;
+    private StreamReader streamReader;
+    private StreamWriter streamWriter;
+    private NetworkStream networkStream;
+    private bool socketReady;
     
     //msg
     public string errorMessage ;
@@ -25,9 +27,23 @@ public class NetworkManager : MonoBehaviour
     private string _data;
     public bool finishedReceiving;
 
-    void Awake()
+    public static NetworkManager Instance { get; private set; }
+
+
+    private void Awake()
     {
-        DontDestroyOnLoad(this);
+        if (Instance is null)
+        {
+            Debug.Log("Created NetworkManager instance");
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else if (Instance != this)
+        {
+            Destroy(this);
+            Debug.Log("Destroy extra NetworkManager instance");
+        }
+        
     }
     
     
@@ -36,9 +52,9 @@ public class NetworkManager : MonoBehaviour
         ProcessReceive();
     }
 
-    public void StartConnection(string host, int port)
+    public bool StartConnection(string host, int port)
     {
-        SetUpSocket(host, port);
+        return SetUpSocket(host, port);
     }
 
     public void Send(string data)
@@ -65,12 +81,17 @@ public class NetworkManager : MonoBehaviour
         return result;
     }
 
+    public bool IsReady()
+    {
+        return socketReady;
+    }
+
     private void OnApplicationQuit()
     {
         CloseSocket();
     }
 
-    private void SetUpSocket(string host, int port)
+    private bool SetUpSocket(string host, int port)
     {
         try
         {
@@ -80,14 +101,16 @@ public class NetworkManager : MonoBehaviour
             streamWriter = new StreamWriter(networkStream);
             streamReader = new StreamReader(networkStream);
             socketReady = true;
+            return true;
         }
         catch (Exception e)
         {
             errorMessage = e.Message;
+            return false;
         }
     }
 
-    private  void CloseSocket()
+    private void CloseSocket()
     {
         if (!socketReady) return;
         streamReader.Close();

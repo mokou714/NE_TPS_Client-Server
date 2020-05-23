@@ -57,6 +57,9 @@
               <e p="HealthPotion.cs" t="Include" />
               <e p="Pickable.cs" t="Include" />
             </e>
+            <e p="Sound" t="Include">
+              <e p="BGMPlayer.cs" t="Include" />
+            </e>
             <e p="UI" t="Include">
               <e p="ArrowIconUI.cs" t="Include" />
               <e p="Billboard.cs" t="Include" />
@@ -73,7 +76,9 @@
             <e p="ClickableText" t="Include">
               <e p="ClickableText.cs" t="Include" />
               <e p="Continue.cs" t="Include" />
+              <e p="Credit.cs" t="Include" />
               <e p="Login.cs" t="Include" />
+              <e p="NewGame.cs" t="Include" />
               <e p="Quit.cs" t="Include" />
               <e p="SignUp.cs" t="Include" />
               <e p="Start.cs" t="Include" />
@@ -91,6 +96,7 @@
               <e p="SignUpManager.cs" t="Include" />
             </e>
             <e p="NetworkManager.cs" t="Include" />
+            <e p="NewGameWindow.cs" t="Include" />
           </e>
         </e>
       </e>

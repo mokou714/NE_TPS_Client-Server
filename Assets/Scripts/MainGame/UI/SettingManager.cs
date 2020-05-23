@@ -28,6 +28,7 @@ public class SettingManager : MonoBehaviour
         menuUI.SetActive(_isDisplaying);
         Time.timeScale = _isDisplaying ? 0 : 1;
         Cursor.visible = _isDisplaying;
+        Screen.lockCursor = !_isDisplaying;
     }
     
 }

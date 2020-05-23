@@ -17,7 +17,7 @@ public class PlayerHealthManager : BaseHealthManager{
 
 
     // Start is called before the first frame update
-    protected virtual void Start()
+    protected override void Start()
     {
         base.Start();
         initHealthBar();

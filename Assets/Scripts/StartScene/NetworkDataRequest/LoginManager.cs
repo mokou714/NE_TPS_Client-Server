@@ -18,7 +18,7 @@ public class LoginManager : NetworkDataRequest
     //invoked by button
     public override void SendRequest()
     {
-        if (!networkManager.socketReady)
+        if (!networkManager.IsReady())
         {
             messageManager.Display("Not connected to the server");
             return;

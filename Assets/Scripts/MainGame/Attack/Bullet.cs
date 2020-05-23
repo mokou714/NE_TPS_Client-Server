@@ -14,13 +14,6 @@ public class Bullet : MonoBehaviour
     private DamageMessageManager _damageMessageManager;
     private int _damage;
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
     void Update()
     {
         Move();
@@ -49,6 +42,7 @@ public class Bullet : MonoBehaviour
         _isMoving = true;
         _startTime = Time.time;
         transform.position = _spawnTransform.position;
+        transform.rotation = Quaternion.LookRotation(velocity);
         gameObject.SetActive(true);
     }
 

@@ -10,7 +10,7 @@ public class CameraTransition : MonoBehaviour
     [Range(0f, 20f)] [SerializeField] private float speed;
     public Transform[] targetTransforms;
     public int index = 0;
-    private bool _started;
+    [SerializeField]private bool _started;
     
     private List<Action> OnTransitionEvents = new List<Action>();
     

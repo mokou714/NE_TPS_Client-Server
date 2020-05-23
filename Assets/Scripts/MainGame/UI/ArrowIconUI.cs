@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ArrowIconUI : MonoBehaviour

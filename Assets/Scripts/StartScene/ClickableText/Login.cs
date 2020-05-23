@@ -11,12 +11,12 @@ public class Login : ClickableText
     [SerializeField] private CanvasBackButton mainBackButton;
     protected override void OnMouseUp()
     {
-        base.OnMouseUp();
         if (isClickable && mouseDown)
         {
             loginWindow.SetActive(true);
             isClickable = signUp.isClickable = false;
             mainBackButton.gameObject.SetActive(false);
         }
+        base.OnMouseUp();
     }
 }

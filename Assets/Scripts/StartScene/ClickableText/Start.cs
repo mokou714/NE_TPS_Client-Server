@@ -8,8 +8,8 @@ public class Start : ClickableText
     [SerializeField] private GameObject connectWindow;
     protected override void OnMouseUp()
     {
-        base.OnMouseUp(); 
         if(isClickable && mouseDown) 
             connectWindow.SetActive(true);
+        base.OnMouseUp(); 
     }
 }

@@ -140,7 +140,7 @@ public class PlayerController : BaseCharacterController
     
     void UpdateAnimState()
     {
-        if (isMoving) return; //disable switching posture while moving
+        if (isMoving || isJumping) return; //disable switching posture while moving or jumping
         if(cameraController.IsSwitchingAiming()) return; //disable switching posture when switching
 
         var _posture = posture;

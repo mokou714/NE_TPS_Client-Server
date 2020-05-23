@@ -5,28 +5,44 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    public NetworkManager networkManager;
     public static PlayerData PlayerData = new PlayerData();
+    private NetworkManager networkManager;
 
-    private bool _isWaiting;
+    public static DataManager Instance { get; private set; }
 
-    // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
-        DontDestroyOnLoad(this);
+        if (Instance is null)
+        {
+            Debug.Log("Created DataManger instance");
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else if (Instance != this)
+        {
+            Destroy(this);
+            Debug.Log("Destroy extra DataManger instance");
+        }
     }
+
+    private void Start()
+    {
+        networkManager = NetworkManager.Instance;
+    }
+
     
-    private void OnApplicationQuit()
+    public bool Connect(string host, int port, Action<string> OnRecieveData)
     {
-        SavePlayerData();
-    }
+        //send text msg after creating the socket
+        if (networkManager.StartConnection(host, port))
+        {
+            networkManager.Send("Connect;");
+            networkManager.Receive();
+            StartCoroutine(WaitingForReceiving(OnRecieveData));
+            return true;
+        }
 
-    public void Connect(string host, int port, Action<string> OnRecieveData)
-    {
-        networkManager.StartConnection(host,port);
-        networkManager.Send("Connect;");
-        networkManager.Receive();
-        StartCoroutine(WaitingForReceiving(OnRecieveData));
+        return false;
     }
 
     public void SignUp(string userId, string userName, string password, Action<string> OnRecieveData)
@@ -61,23 +77,30 @@ public class DataManager : MonoBehaviour
         StartCoroutine(WaitingForReceiving(OnRecieveData));
     }
 
-    public void SavePlayerData()
+    public void SavePlayerData(Action<string> OnRecieveData)
     {
-        //todo
-        networkManager.Send("Save;" + PlayerData.userId);
+        var data = PlayerData.userId + ";" 
+                                     + PlayerData.health + ";"
+                                     + PlayerData.backupAmmo + ";"
+                                     + PlayerData.arrowCount + ";"
+                                     + PlayerData.exp + ";"
+                                     + PlayerData.totalKills + ";"
+                                     + PlayerData.playingTime + ";"
+                                     + PlayerData.currentLevel + ";";
+
+        networkManager.Send("Save;" + data);
+        networkManager.Receive();
+        StartCoroutine(WaitingForReceiving(OnRecieveData));
     }
 
 
     private IEnumerator WaitingForReceiving (Action<string> OnRecieveData)
     {
         Debug.Log("Waiting For Receiving...");
-        _isWaiting = true;
         yield return new WaitUntil(() => networkManager.finishedReceiving);
         Debug.Log("End Receiving...");
-        _isWaiting = false;
         Debug.Log("Fetched Data");
         var data = networkManager.FetchReceivedData();
         OnRecieveData(data);
-
     }
 }

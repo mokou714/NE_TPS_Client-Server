@@ -9,35 +9,42 @@ using UnityEngine.UI;
 public class ConnectManager : NetworkDataRequest{
     public InputField serverAddress;
     public InputField port;
-
+    public GameObject mainBackButton;
+    public GameObject title;
     //invoked by button
     public override void SendRequest()
     {
         //already connected
-        if (networkManager.socketReady)
+        if (networkManager.IsReady())
         {
+            Debug.Log("Already connected");
             cameraTransition.NextTransition();
             return;
         }
         
         //start connecting
         messageManager.Display("Connecting to server...");
-        dataManager.Connect(serverAddress.text, int.Parse(port.text), OnReceiveData);
+        if (!dataManager.Connect(serverAddress.text, int.Parse(port.text), OnReceiveData))
+        {
+            messageManager.Display("Failed to build connection with the server");
+        }
 
-        //massage display
-        if (!networkManager.socketReady)
-        {
-            messageManager.Display(networkManager.errorMessage);
-        }
-        else
-        {
-            messageManager.Hide();
-            cameraTransition.NextTransition();
-        }
+       
     }
 
     protected override void OnReceiveData(string data)
     {
-        Debug.Log(data);
+        //massage display
+        if (data == "success")
+        {
+            messageManager.Hide();
+            cameraTransition.NextTransition();
+            mainBackButton.SetActive(true);
+            title.SetActive(false);
+        }
+        else
+        {
+            messageManager.Display(networkManager.errorMessage);
+        }
     }
 }

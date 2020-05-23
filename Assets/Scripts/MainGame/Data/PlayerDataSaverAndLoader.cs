@@ -14,21 +14,9 @@ public class PlayerDataSaverAndLoader : MonoBehaviour
 
     public Player player;
     public GameStateManager gameStateManager;
-    
-    
-    private void Awake()
-    {
-        if (DataManager.PlayerData.userId is null)
-        {
-            Debug.Log("Failed to load player data. Player data not exists.");
-        }
-        else
-        {
-            Load(DataManager.PlayerData);
-        }
-    }
+    public MessageManager messageManager;
 
-    private void Load(PlayerData data)
+    public void LoadPlayerData(PlayerData data)
     {
         player.playerHealthManager.health = data.health;
         player.playerShootManager.backUpAmmo = data.backupAmmo;
@@ -36,18 +24,13 @@ public class PlayerDataSaverAndLoader : MonoBehaviour
         //notify gamestate
     }
 
-    private void Save()
+    public bool SavePlayerData()
     {
-        if (DataManager.PlayerData is null)
-        {
-            Debug.Log("Failed to save player data. Target data container not exits.");
-        }
-        else
-        {
-            DataManager.PlayerData.health = player.playerHealthManager.health;
-            DataManager.PlayerData.arrowCount = player.playerShootManager.backUpAmmo;
-            DataManager.PlayerData.arrowCount = player.arrowSkillManager.arrowCount;
-            //notify gamestate
-        }
+        if (DataManager.PlayerData is null) return false;
+        DataManager.PlayerData.health = player.playerHealthManager.health == 0? 100 :player.playerHealthManager.health;
+        DataManager.PlayerData.backupAmmo = player.playerShootManager.backUpAmmo;
+        DataManager.PlayerData.arrowCount = player.arrowSkillManager.arrowCount;
+        return true;
+        
     }
 }

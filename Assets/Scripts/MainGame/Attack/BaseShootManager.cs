@@ -13,17 +13,19 @@ public abstract class BaseShootManager : MonoBehaviour
     //properties
     [SerializeField] protected GameObject bulletPrefab;
     [SerializeField] protected Transform bulletInitTransform;
-    [SerializeField] protected float fireCDTime;
+    [SerializeField] protected float fireCD;
+    [SerializeField] protected float burstFireCD;
     [SerializeField] protected float bulletSpeed;
     [SerializeField] protected float bulletLifetime;
     [SerializeField] protected int layerMask;
     [SerializeField] protected bool burstMode;
-    [SerializeField] protected int bulletDamage;
+    [SerializeField] protected int bulletMinDamage;
+    [SerializeField] protected int bulletMaxDamage;
 
     //helper vars
     protected bool _isShooting = false;
     protected bool _isReloading = false;
-    protected Bullet[] _bulletPool;
+    [SerializeField]protected Bullet[] _bulletPool;
     
     //other components
     protected BaseCharacterController characterController;
@@ -81,7 +83,6 @@ public abstract class BaseShootManager : MonoBehaviour
         if( _isShooting || _isReloading) return;
         
         _isShooting = true;
-        animationController.Shoot(burstMode);
         StartCoroutine(ShootBullet(burstMode ? 4 : 1));
     }
 
@@ -109,7 +110,7 @@ public abstract class BaseShootManager : MonoBehaviour
         {
             GameObject obj = Instantiate(bulletPrefab, null);
             _bulletPool[i] = obj.GetComponent<Bullet>();
-            _bulletPool[i].Initialize(bulletDamage, bulletInitTransform,null);
+            _bulletPool[i].Initialize(Random.Range(bulletMinDamage, bulletMaxDamage+1), bulletInitTransform,null);
         }
     }
     
@@ -123,7 +124,8 @@ public abstract class BaseShootManager : MonoBehaviour
             --currentAmmo;
             effectManager.GunFire();
             audioSource.PlayOneShot(shootSFX);
-            yield return new WaitForSeconds(fireCDTime);
+            animationController.Shoot(burstMode);
+            yield return new WaitForSeconds(burstMode? burstFireCD:fireCD);
         }
 
         _isShooting = false;
