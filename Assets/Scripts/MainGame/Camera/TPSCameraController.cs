@@ -20,21 +20,15 @@ public class TPSCameraController : MonoBehaviour
     public Transform pivot;
     
     //helper data
-    private Vector3 _lastMousePos;
-    private Vector3 _defaultMousePos;
+ 
     private bool _isAiming;
     private bool _isSwitchingAiming;
     
-    //other components
-    [SerializeField] private PlayerShootManager _shootManager;
-    [SerializeField] private PlayerController _playerController;
     
     // Start is called before the first frame update
     void Start()
     {
         Screen.lockCursor = true;
-        _lastMousePos = Input.mousePosition;
-        _defaultMousePos = new Vector3(Screen.width/2f, Screen.height/2f,0f);
         pivot = transform.parent;
         _defaultLocalPosition = transform.localPosition;
         _camera = GetComponent<Camera>();
@@ -69,22 +63,13 @@ public class TPSCameraController : MonoBehaviour
         //rotate pivot along world Y axis
         var rX = revertX ? -1 : 1;
         var rY = revertY ? -1 : 1;
-        var currentMousePos = Input.mousePosition;
-        // var deltaX = currentMousePos.x - _lastMousePos.x;
-        // var deltaY = currentMousePos.y - _lastMousePos.y;
         var deltaX = Input.GetAxis("Mouse X");
         var deltaY = Input.GetAxis("Mouse Y");
         
-
         pivot.rotation *= Quaternion.AngleAxis(Time.deltaTime*sensitivity*deltaX*rX * 50f, Vector3.up);
-        //pivot.Rotate(Vector3.up, Time.deltaTime*sensitivity*deltaX*rX,Space.World);
         transform.localRotation *= Quaternion.AngleAxis(Time.deltaTime*sensitivity*deltaY*rY * 50f, Vector3.left);
-        //transform.Rotate(Vector3.right, -Time.deltaTime*sensitivity*deltaY*rY,Space.Self);
 
-        _lastMousePos = currentMousePos;
-        //_lastMousePos.x = deltaX;
-        //_lastMousePos.y = deltaY;
-    
+
         //clamp to angle range
         var newRotation = new Vector3(transform.rotation.eulerAngles.x,0,0);
         if (newRotation.x < VerticalAngleRange.x+360 && newRotation.x > VerticalAngleRange.y)

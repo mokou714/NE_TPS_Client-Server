@@ -23,7 +23,7 @@ public abstract class BaseArrow : MonoBehaviour
     //helper data
     private float _lifetime;
     private float _startTime;
-    private Transform _originalLocalTransform;
+    private Transform _originTransform;
     private float _defaultShakingSpeed;
     private float _defaultShakingRadius;
     private Transform _parent;
@@ -54,11 +54,11 @@ public abstract class BaseArrow : MonoBehaviour
         UpdateDirection();
     }
 
-    public void Initialize(Transform originalTransform)
+    public void Initialize(Transform originTransform)
     {
-        _originalLocalTransform = originalTransform;
-        transform.position = originalTransform.position;
-        transform.rotation = originalTransform.rotation;
+        _originTransform = originTransform;
+        transform.position = originTransform.position;
+        transform.rotation = originTransform.rotation;
         
     }
     
@@ -68,8 +68,7 @@ public abstract class BaseArrow : MonoBehaviour
         isAiming = true;
         StartCoroutine(Shaking());
     }
-    
-    
+
 
 
     public void Shoot(float lifeTime, Vector3 shootForce)
@@ -91,27 +90,21 @@ public abstract class BaseArrow : MonoBehaviour
    
     }
     
-    protected virtual void Reset()
+    public virtual void Reset()
     {
-        if(isAiming || !isOnAir) return;
-
         _rigidbody.velocity = Vector3.zero;
-        
         isAiming = false;
         isOnAir = false;
         ShakingSpeed = _defaultShakingSpeed;
         ShakingRadious = _defaultShakingRadius;
-        transform.position = _originalLocalTransform.position;
-        transform.rotation = _originalLocalTransform.rotation;
+        transform.parent = _parent;
+        transform.position = _originTransform.position;
+        transform.rotation = _originTransform.rotation;
         trail.Clear();
         trail.enabled = false;
-        transform.parent = _parent;
-        gameObject.SetActive(false);
         Debug.Log("Arrow Reset");
     }
     
-
-
     protected virtual void UpdateDirection()
     {
         if(isAiming || !isOnAir) return;
@@ -122,13 +115,24 @@ public abstract class BaseArrow : MonoBehaviour
     protected virtual void CheckLifetime()
     {
         if(isAiming || !isOnAir) return;
-        
-        if(Time.time > _startTime + _lifetime)
+
+        if (Time.time > _startTime + _lifetime)
+        {
             Reset();
+            gameObject.SetActive(false);
+        }
     }
 
     //apply skill effects then reset
-    protected abstract void OnTriggerEnter(Collider other);
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Balloon"))
+        {
+            other.gameObject.GetComponent<Balloon>().Dropdown();
+        }
+        Reset();
+        gameObject.SetActive(false);
+    }
        
 
     private IEnumerator Shaking()
@@ -144,7 +148,7 @@ public abstract class BaseArrow : MonoBehaviour
                 var xOffset = Random.Range(-_radious, _radious);
                 var yOffset = Random.Range(-_radious, _radious);
                 var zOffset = Random.Range(-_radious, _radious);
-                transform.position = _originalLocalTransform.position + new Vector3(xOffset, yOffset, zOffset);
+                transform.position = _originTransform.position + new Vector3(xOffset, yOffset, zOffset);
             }
         }
     }

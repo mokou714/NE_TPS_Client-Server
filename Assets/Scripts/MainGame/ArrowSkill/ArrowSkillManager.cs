@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -59,11 +60,17 @@ public class ArrowSkillManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ChangeAimingState();
+       
         SwitchArrowType();
         UpdateCurrentArrow();
         ShootArrow();
         Drawing();
+    }
+
+    private void LateUpdate()
+    {
+        UpdateScreenCenterOnSizeChanged();
+        ChangeAimingState();
     }
 
 
@@ -97,8 +104,6 @@ public class ArrowSkillManager : MonoBehaviour
             _currentArrow.ShakingRadious *= 2;
             audioSource.PlayOneShot(pullArrow);
         }
-
-
     }
 
     private void Drawing()
@@ -110,14 +115,11 @@ public class ArrowSkillManager : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 _currentArrow.Shoot(arrowLifetime, _currentForce * 200f * dir); //no need to specify shoot direction here
+                EndDrawing();
+                _currentArrow = null;
                 _lastShootTime = Time.time;
                 arrowCount--;
                 arrowCountUI.text = arrowCount.ToString();
-                _isDrawing = false;
-                _currentForce = minShootForce;
-                arrowOrigin.localPosition = _defaultArrowOriginPosition;
-                arrowOrigin.localRotation = _defaultArrowOriginRotation;
-                _currentArrow = null;
                 audioSource.PlayOneShot(releaseArrow);
             }
             //still drawing
@@ -178,12 +180,17 @@ public class ArrowSkillManager : MonoBehaviour
         
         if (Input.GetMouseButtonDown(1))
         {
-            //turn on/off skill when not in GUARD state
+            //can switch skill state while not in GUARD state
             if (_playerController.posture == BodyPosture.COMBAT || _playerController.posture == BodyPosture.CROUCH)
             {
                 UpdateCurrentArrow();
                 if (_currentArrow is null) return;
+                EndDrawing();
                 inAimingState = !inAimingState;
+                
+                if(!inAimingState)
+                    _currentArrow.Reset();
+                
                 DisplayArrow();
             }
         }
@@ -191,6 +198,9 @@ public class ArrowSkillManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.F) && inAimingState)
         {
             inAimingState = false;
+            EndDrawing();
+            if (_currentArrow is null) return;
+                _currentArrow.Reset();
             DisplayArrow();
         }
     }
@@ -215,6 +225,7 @@ public class ArrowSkillManager : MonoBehaviour
         if (_currentArrow is null) return;
         
         _currentArrow.isAiming = inAimingState;
+        
         if(inAimingState)
             _currentArrow.gameObject.SetActive(true);
         else 
@@ -240,6 +251,24 @@ public class ArrowSkillManager : MonoBehaviour
         if (!(_currentArrow is null))
             _currentArrow.gameObject.SetActive(true);
     }
+
+    private void EndDrawing()
+    {
+        _isDrawing = false;
+        _currentForce = minShootForce;
+        arrowOrigin.localPosition = _defaultArrowOriginPosition;
+        arrowOrigin.localRotation = _defaultArrowOriginRotation;
+
+    }
+    
+    private void UpdateScreenCenterOnSizeChanged()
+    {
+        if (!Mathf.Approximately(Screen.width / 2f, _screenCenter.x))
+        {
+            _screenCenter =  new Vector3(Screen.width/2f,Screen.height/2f,0f);
+        }
+    }
+
 
     public void ObtainArrows(int count)
     {

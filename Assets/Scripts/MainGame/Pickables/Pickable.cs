@@ -16,7 +16,7 @@ public abstract class Pickable : MonoBehaviour
 
     protected virtual void PickUp(GameObject obj)
     {
-        obj.GetComponent<PlayerController>().Center.GetComponent<AudioSource>().PlayOneShot(pickupSFX);
+        obj.GetComponent<PlayerController>().Center.GetComponent<AudioSource>().PlayOneShot(pickupSFX, 2f);
     }
 
     protected virtual void OnTriggerEnter(Collider other)

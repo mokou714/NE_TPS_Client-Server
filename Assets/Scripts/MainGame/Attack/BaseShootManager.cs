@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public abstract class BaseShootManager : MonoBehaviour
 {
@@ -50,11 +52,16 @@ public abstract class BaseShootManager : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        //SwitchMode();
         Shoot();
         Reload();
+    }
+
+    protected virtual void LateUpdate()
+    {
         SwitchMode();
     }
-    
+
     public virtual void FinishReloading()
     {
         _isReloading = false;

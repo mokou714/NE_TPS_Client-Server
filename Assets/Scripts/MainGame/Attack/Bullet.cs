@@ -73,7 +73,10 @@ public class Bullet : MonoBehaviour
                     _damageMessageManager.ShowMessage(_damage, characterController.Center.position);
                 }
                 Reset(); 
-                break; 
+                break;
+            case "Balloon":
+                other.gameObject.GetComponent<Balloon>().Dropdown();
+                break;
             default:
                 Reset(); 
                 return;

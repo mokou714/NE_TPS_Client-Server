@@ -51,6 +51,11 @@
               <e p="EnemyHealthManager.cs" t="Include" />
               <e p="PlayerHealthManager.cs" t="Include" />
             </e>
+            <e p="Others" t="Include">
+              <e p="Balloon.cs" t="Include" />
+              <e p="BalloonManager.cs" t="Include" />
+              <e p="PresentBox.cs" t="Include" />
+            </e>
             <e p="Pickables" t="Include">
               <e p="AmmoSupply.cs" t="Include" />
               <e p="ArrowSupply.cs" t="Include" />

@@ -5,7 +5,8 @@ using UnityEngine;
 public class CanvasBackButton : MonoBehaviour
 {
     [SerializeField] private CameraTransition cameraTransition;
-
+    [SerializeField] private GameObject title;
+    
     public void Click()
     {
         cameraTransition.PreviousTransition();
@@ -13,6 +14,7 @@ public class CanvasBackButton : MonoBehaviour
         if (cameraTransition.index == 0)
         {
             gameObject.SetActive(false);
+            title.SetActive(true);
         }
         
     }

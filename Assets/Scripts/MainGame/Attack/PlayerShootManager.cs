@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Assertions.Comparers;
 using UnityEngine.UI;
 using Cursor = UnityEngine.Cursor;
 
@@ -21,8 +22,12 @@ public class PlayerShootManager : BaseShootManager
     //other components
     [SerializeField] private TPSCameraController _cameraController;
     private ArrowSkillManager _arrowSkillManager;
-    
-    
+
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
+        UpdateScreenCenterOnSizeChanged();
+    }
     
     protected override void Start()
     {
@@ -37,14 +42,6 @@ public class PlayerShootManager : BaseShootManager
         Cursor.lockState = CursorLockMode.Confined;
         _screenCenter = new Vector3(Screen.width/2f,Screen.height/2f,0f);
     }
-
-
-    protected override void Update()
-    {
-        base.Update();
-        _Debug();
-    }
-
 
     public override Vector3 GetAimingDirection()
     {
@@ -137,14 +134,12 @@ public class PlayerShootManager : BaseShootManager
         backupAmmoUI.text = backUpAmmo.ToString();
     }
 
-    
-
-
-    //debug
-    private void _Debug()
+    private void UpdateScreenCenterOnSizeChanged()
     {
-        var cursorRay = _cameraController.getCamera().ScreenPointToRay(_screenCenter);
-        Debug.DrawRay(cursorRay.origin, cursorRay.direction * 10, Color.yellow);
+        if (!Mathf.Approximately(Screen.width / 2f, _screenCenter.x))
+        {
+            _screenCenter =  new Vector3(Screen.width/2f,Screen.height/2f,0f);
+        }
     }
     
     

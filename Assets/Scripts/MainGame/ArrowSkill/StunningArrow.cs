@@ -11,12 +11,13 @@ public class StunningArrow : BaseArrow
     
     protected override void OnTriggerEnter(Collider other)
     {
+        if (!isOnAir) return;
         //for now: only player can shoot arrows
         if (other.gameObject.CompareTag("Enemy"))
         {
             InitStunningEffect(other.gameObject);
         }
-        Reset();
+        base.OnTriggerEnter(other);
     }
     
 

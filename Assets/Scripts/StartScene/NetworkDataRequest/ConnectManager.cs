@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.MemoryProfiler;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ConnectManager : NetworkDataRequest{
@@ -18,7 +13,7 @@ public class ConnectManager : NetworkDataRequest{
         if (networkManager.IsReady())
         {
             Debug.Log("Already connected");
-            cameraTransition.NextTransition();
+            OnConnectionBuild();
             return;
         }
         
@@ -37,14 +32,19 @@ public class ConnectManager : NetworkDataRequest{
         //massage display
         if (data == "success")
         {
-            messageManager.Hide();
-            cameraTransition.NextTransition();
-            mainBackButton.SetActive(true);
-            title.SetActive(false);
+            OnConnectionBuild();
         }
         else
         {
             messageManager.Display(networkManager.errorMessage);
         }
+    }
+
+    private void OnConnectionBuild()
+    {
+        messageManager.Hide();
+        cameraTransition.NextTransition();
+        mainBackButton.SetActive(true);
+        title.SetActive(false);
     }
 }

@@ -32770,7 +32770,6 @@ MonoBehaviour:
   ShakingSpeed: 6.18
   isAiming: 0
   isOnAir: 0
-  arrowMesh: {fileID: 3220407361600518148}
   trail: {fileID: 3220407361296514061}
   damageMessageManager: {fileID: 0}
 --- !u!1 &3220407360212279317
@@ -32983,7 +32982,6 @@ MonoBehaviour:
   ShakingSpeed: 6.18
   isAiming: 0
   isOnAir: 0
-  arrowMesh: {fileID: 3220407361198575109}
   trail: {fileID: 3220407360650292473}
   damageMessageManager: {fileID: 0}
 --- !u!1 &3220407360258438648
@@ -33075,14 +33073,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 3220407360677756555}
-  sensitivity: 15
+  sensitivity: 10
   aimingModePosition: {x: 0.6, y: 1.4, z: -1.8}
   revertY: 0
   revertX: 0
   VerticalAngleRange: {x: -30, y: 30}
   pivot: {fileID: 3220407361695790813}
-  _shootManager: {fileID: 8959787446854823497}
-  _playerController: {fileID: 3220407360677756555}
 --- !u!81 &3220407360258438650
 AudioListener:
   m_ObjectHideFlags: 0
@@ -33387,7 +33383,6 @@ MonoBehaviour:
   ShakingSpeed: 6.18
   isAiming: 0
   isOnAir: 0
-  arrowMesh: {fileID: 3220407360577732786}
   trail: {fileID: 3220407361557101108}
   damageMessageManager: {fileID: 0}
 --- !u!1 &3220407360520315548
@@ -33505,7 +33500,6 @@ MonoBehaviour:
   ShakingSpeed: 6.18
   isAiming: 0
   isOnAir: 0
-  arrowMesh: {fileID: 3220407361238296446}
   trail: {fileID: 3220407360367386169}
   damageMessageManager: {fileID: 0}
 --- !u!1 &3220407360552388749
@@ -34020,7 +34014,6 @@ MonoBehaviour:
   ShakingSpeed: 6.18
   isAiming: 0
   isOnAir: 0
-  arrowMesh: {fileID: 3220407361221301203}
   trail: {fileID: 3220407362047070457}
   damageMessageManager: {fileID: 0}
   stunningRange: 3
@@ -34107,7 +34100,6 @@ MonoBehaviour:
   ShakingSpeed: 6.18
   isAiming: 0
   isOnAir: 0
-  arrowMesh: {fileID: 3220407360751975245}
   trail: {fileID: 3220407361400298494}
   damageMessageManager: {fileID: 0}
   stunningRange: 3
@@ -48585,7 +48577,6 @@ MonoBehaviour:
   ShakingSpeed: 6.18
   isAiming: 0
   isOnAir: 0
-  arrowMesh: {fileID: 3220407360348190651}
   trail: {fileID: 3220407361622617473}
   damageMessageManager: {fileID: 0}
   stunningRange: 3
@@ -67738,7 +67729,6 @@ MonoBehaviour:
   ShakingSpeed: 6.18
   isAiming: 0
   isOnAir: 0
-  arrowMesh: {fileID: 3220407360554115003}
   trail: {fileID: 3220407362188182430}
   damageMessageManager: {fileID: 0}
 --- !u!1 &3220407361378996020
@@ -67822,7 +67812,6 @@ MonoBehaviour:
   ShakingSpeed: 6.18
   isAiming: 0
   isOnAir: 0
-  arrowMesh: {fileID: 3220407362007668994}
   trail: {fileID: 3220407360552797236}
   damageMessageManager: {fileID: 0}
 --- !u!1 &3220407361397430856
@@ -102966,7 +102955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4e84a4f05b049499c4a5f2c0376d1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAlive: 1
+  isAlive: 0
   isWalking: 0
   isStunned: 0
 --- !u!114 &3220407360677756555
@@ -103026,7 +103015,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1282705611573057542, guid: 9bc547478468043989f2adb6df2e5526,
     type: 3}
   bulletInitTransform: {fileID: 3220407360212279316}
-  fireCDTime: 0.2
+  fireCD: 0.2
+  burstFireCD: 0.1
   bulletSpeed: 50
   bulletLifetime: 2
   layerMask: 8

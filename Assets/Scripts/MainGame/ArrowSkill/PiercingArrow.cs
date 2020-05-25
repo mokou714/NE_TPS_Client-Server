@@ -4,6 +4,7 @@ public class PiercingArrow : BaseArrow
 {
    protected override void OnTriggerEnter(Collider other)
    {
+      if (!isOnAir) return;
       //for now: only player can shoot arrows
       if (other.gameObject.CompareTag("Enemy"))
       {
@@ -12,7 +13,7 @@ public class PiercingArrow : BaseArrow
       }
       else
       {
-         Reset();
+         base.OnTriggerEnter(other);
       }
    }
 }

@@ -18,9 +18,9 @@ public class PlayerData
     {
         userId = "";
         userName = "";
-        health = 0;
-        backupAmmo = 0;
-        arrowCount = 0;
+        health = 100;
+        backupAmmo = 90;
+        arrowCount = 10;
         exp = 0;
         totalKills = 0;
         playingTime = "0h 0m 0s";

@@ -1,29 +1,19 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BGMPlayer : MonoBehaviour
 {
-    private static BGMPlayer instance = null;
-
-    public static BGMPlayer Instance
-    {
-        get => instance;
-    }
+    public static BGMPlayer Instance { get; private set; } = null;
 
     private void Awake()
     {
-        if (instance is null)
+        if (Instance is null)
         {
-            instance = this;
+            Instance = this;
+            DontDestroyOnLoad(this);
         }
-        else if (instance != this)
+        else if (Instance != this)
         {
-            Destroy(instance);
-            instance = this;
+            Destroy(this);
         }
-
-        DontDestroyOnLoad(this);
     }
 }
